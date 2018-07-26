@@ -9,6 +9,10 @@ var app = {
         d : { keycode: 68, isPressed: false },
         s : { keycode: 83, isPressed: false }
     },
+    mousePos: {
+        x: 0,
+        y: 0
+    },
     playerObject: null,
     setupCanvas: function() {
         var canvas = document.getElementById("game");

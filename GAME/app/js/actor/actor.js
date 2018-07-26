@@ -6,5 +6,6 @@ function Actor(nameString, x, y, r) {
 }
 
 Actor.prototype.update = function(dt) {
-    
+
 }
+
