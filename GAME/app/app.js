@@ -65,13 +65,13 @@ var app = {
         this.stage.addChild(this.debugLine);
 
         this.stage.on("stagemousedown", function(event) {
-            app.handleMouseDown(event);
+            
         });
 
         document.onkeydown = this.handleKeyDown;
         document.onkeyup = this.handleKeyUp;
 
-        this.enemy = new ball(this.stage, "ball", 400, 400, 10);
+        this.enemy = new ball(this.stage, "ball", 20, 20, 40);
 
         createjs.Ticker.addEventListener("tick", this.update);
         createjs.Ticker.framerate = this.FPS;   
@@ -80,6 +80,7 @@ var app = {
         app.stage.update(event);
         var dt = event.delta / 1000;
         app.elapsedTime += dt;
+        app.enemy.update(dt);
 
         app.debugLine.graphics.clear();
         app.debugLine.graphics.beginStroke('00f').moveTo(app.playerChar.x, app.playerChar.y).lineTo(app.mousePos.x, app.mousePos.y);

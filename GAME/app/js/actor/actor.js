@@ -14,9 +14,19 @@ Actor.prototype.update = function(dt)
 function ball(parent, nameString, x, y, r){
     Actor.call(this, nameString, x, y, r);
     var ball = new createjs.Shape();
-    ball.graphics.beginStroke("#").drawCircle(0,0, 20);
+    ball.graphics.beginStroke("#").drawCircle(x, y, r);
 
     app.stage.addChild(ball);
+
+    this.update = function(dt){
+        var angleRad = Math.atan2(app.playerChar.y - app.enemy.pos.y, app.playerChar.x - app.enemy.pos.x);
+        var angleDeg = angleRad * 180 / Math.PI;
+        app.enemy.rotation = angleDeg;
+        app.enemy.pos.x += Math.cos(angleRad) * 150 * dt;
+        app.enemy.pos.y += Math.sin(angleRad) * 150 * dt;
+        ball.x = app.enemy.pos.x;
+        ball.y = app.enemy.pos.y;
+    }
 }
 ball.prototype = Object.create(Actor.prototype);
 ball.prototype.constructor = ball;
