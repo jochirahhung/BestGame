@@ -15,9 +15,9 @@ var app = {
     },
 
     assets: null,
-
-
-    playerObject: null,
+    playerChar: null,
+    enemy: null,
+    debugLine: null,
     setupCanvas: function() {
         var canvas = document.getElementById("game");
         canvas.width = app.SCREEN_WIDTH;
@@ -27,10 +27,14 @@ var app = {
     beginLoad: function() {
         manifest = [
             {
-                src: "js/actor/actor.js",
-            },
+                src: "js/actor/actor.js"
+            }
         ];
-        this.assets = new createjs.LoadQueue(true); 
+        this.assets = new createjs.LoadQueue(true);
+
+        this.assets.on("progress", function (event) { 
+            // console.log(((event.loaded / event.total) * 100) + "%"); 
+        });
 
         this.assets.on("complete", function (event) {
             app.init();
@@ -49,9 +53,25 @@ var app = {
             console.log("AAAAAAAAAAAAAAAAAAAAA: ( " + app.mousePos.x + ", " + app.mousePos.y + ")");
         });
 
+        this.playerChar = new createjs.Shape();
+        this.playerChar.graphics.beginFill('#fffff').drawRect(0, 0, 25, 25);
+        // this.playerChar.getBounds(this.playerChar.setBounds(12.5,12.5,0,0));
+        this.playerChar.x = this.SCREEN_WIDTH/2;
+        this.playerChar.y = this.SCREEN_HEIGHT/2;
+        this.stage.addChild(this.playerChar);  
+
+        this.debugLine = new createjs.Shape();
+        this.debugLine.graphics.beginStroke('00f').moveTo(this.playerChar.x, this.playerChar.y).lineTo(app.mousePos.x, app.mousePos.y);
+        this.stage.addChild(this.debugLine);
+
         this.stage.on("stagemousedown", function(event) {
             app.handleMouseDown(event);
         });
+
+        document.onkeydown = this.handleKeyDown;
+        document.onkeyup = this.handleKeyUp;
+
+        this.enemy = new ball(this.stage, "ball", 400, 400, 10);
 
         createjs.Ticker.addEventListener("tick", this.update);
         createjs.Ticker.framerate = this.FPS;   
@@ -60,8 +80,35 @@ var app = {
         app.stage.update(event);
         var dt = event.delta / 1000;
         app.elapsedTime += dt;
-        this.playerObject = new ball(this.stage, "ball", 0, 0, 2);
 
+        app.debugLine.graphics.clear();
+        app.debugLine.graphics.beginStroke('00f').moveTo(app.playerChar.x, app.playerChar.y).lineTo(app.mousePos.x, app.mousePos.y);
+        var ROT_SPEED = 100;
+        var MOVE_SPEED = 100;
+        
+        var rotation = app.playerChar.rotation / 360 * 2 * Math.PI;
+
+        if(app.keyboard.w.isPressed)
+        {
+            app.playerChar.y -= MOVE_SPEED * dt;
+        }
+        
+        if(app.keyboard.s.isPressed)
+        {
+            app.playerChar.y += MOVE_SPEED * dt;
+        }
+        
+        if(app.keyboard.d.isPressed) {
+            app.playerChar.x += MOVE_SPEED * dt;
+        }
+        
+        if(app.keyboard.a.isPressed) {
+            app.playerChar.x -= MOVE_SPEED * dt;
+        }
+
+        var angleRad = Math.atan2(app.mousePos.y - app.playerChar.y, app.mousePos.x - app.playerChar.x);
+        var angleDeg = angleRad * 180 / Math.PI;
+        app.playerChar.rotation = angleDeg;
     },
     handleKeyDown: function(event)
     {
@@ -90,3 +137,5 @@ var app = {
         }
     }
 }
+
+app.beginLoad();
