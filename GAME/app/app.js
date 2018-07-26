@@ -13,17 +13,30 @@ var app = {
         x: 0,
         y: 0
     },
+
+    assets: null,
+
+
     playerObject: null,
     setupCanvas: function() {
         var canvas = document.getElementById("game");
-        canvas.width = settings.SCREEN_WIDTH;
-        canvas.height = settings.SCREEN_HEIGHT;
+        canvas.width = app.SCREEN_WIDTH;
+        canvas.height = app.SCREEN_HEIGHT;
         this.stage = new createjs.Stage(canvas);
     },
     beginLoad: function() {
-        manifest: [
+        manifest = [
+            {
+                src: "js/actor/actor.js",
+            },
+        ];
+        this.assets = new createjs.LoadQueue(true); 
 
-        ]
+        this.assets.on("complete", function (event) {
+            app.init();
+        });
+
+        this.assets.loadManifest(manifest);
     },
     init: function() {
         this.setupCanvas();
@@ -47,6 +60,8 @@ var app = {
         app.stage.update(event);
         var dt = event.delta / 1000;
         app.elapsedTime += dt;
+        this.playerObject = new ball(this.stage, "ball", 0, 0, 2);
+
     },
     handleKeyDown: function(event)
     {
