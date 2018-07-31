@@ -19,6 +19,8 @@ var app = {
     playerChar: null,
     enemy: null,
     bullet: null,
+    enemy2: null,
+    enemy3: null,
     debugLine: null,
     setupCanvas: function() {
         var canvas = document.getElementById("game");
@@ -79,6 +81,8 @@ var app = {
 
         this.enemy = new ball(this.stage, "ball", 20, 20, 40);
 
+        this.enemy2 = new ball2(this.stage, "ball2", 70, 20, 10);
+
         createjs.Ticker.addEventListener("tick", this.update);
         createjs.Ticker.framerate = this.FPS;   
     },
@@ -87,6 +91,8 @@ var app = {
         var dt = event.delta / 1000;
         app.elapsedTime += dt;
         
+        app.enemy.update(dt);
+        app.enemy2.update(dt);
         app.debugLine.graphics.clear();
         app.debugLine.graphics.beginStroke('00f').moveTo(app.playerChar.pos.x, app.playerChar.pos.y).lineTo(app.mousePos.x, app.mousePos.y);
         var ROT_SPEED = 100;
