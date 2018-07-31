@@ -32,6 +32,9 @@ var app = {
         manifest = [
             {
                 src: "js/actor/actor.js"
+            },
+            {
+                src: "js/utilities.js"
             }
         ];
         this.assets = new createjs.LoadQueue(true);
@@ -51,6 +54,10 @@ var app = {
 
         this.stage.enableMouseOver();
 
+        var screen = new createjs.Shape();
+        screen.graphics.beginStroke('#000').drawRect(0, 0, app.SCREEN_WIDTH, app.SCREEN_HEIGHT);
+        app.stage.addChild(screen);
+
         this.stage.on("stagemousemove", function(event) {
             app.mousePos.x = Math.floor(event.stageX);
             app.mousePos.y = Math.floor(event.stageY);
@@ -66,7 +73,7 @@ var app = {
         // this.playerChar.y = this.SCREEN_HEIGHT/2;
         // this.stage.addChild(this.playerChar);  
 
-        this.playerChar = new Player("player", app.SCREEN_WIDTH/2, app.SCREEN_HEIGHT/2, 25, 25);
+        this.playerChar = new Player("player", app.SCREEN_WIDTH/2, app.SCREEN_HEIGHT/2, 25, 25, 25);
 
         this.debugLine = new createjs.Shape();
         this.debugLine.graphics.beginStroke('00f').moveTo(this.playerChar.pos.x, this.playerChar.pos.y).lineTo(app.mousePos.x, app.mousePos.y);
@@ -79,9 +86,9 @@ var app = {
         document.onkeydown = this.handleKeyDown;
         document.onkeyup = this.handleKeyUp;
 
-        this.enemy = new ball(this.stage, "ball", 20, 20, 40);
+        this.enemy = new ball(this.stage, "ball", 75, 75, 40);
 
-        this.enemy2 = new ball2(this.stage, "ball2", 70, 20, 10);
+        this.enemy2 = new ball2(this.stage, "ball2", app.SCREEN_WIDTH - 75, app.SCREEN_HEIGHT - 75, 10);
 
         createjs.Ticker.addEventListener("tick", this.update);
         createjs.Ticker.framerate = this.FPS;   
@@ -90,17 +97,23 @@ var app = {
         app.stage.update(event);
         var dt = event.delta / 1000;
         app.elapsedTime += dt;
-        
-        app.enemy.update(dt);
-        app.enemy2.update(dt);
+
         app.debugLine.graphics.clear();
         app.debugLine.graphics.beginStroke('00f').moveTo(app.playerChar.pos.x, app.playerChar.pos.y).lineTo(app.mousePos.x, app.mousePos.y);
         var ROT_SPEED = 100;
         var MOVE_SPEED = 100;
 
-        app.enemy.update(dt);
         app.playerChar.update(dt);
-        app.bullet.update(dt);
+        app.enemy.update(dt);
+        app.enemy2.update(dt);
+
+        // if(areActorsColliding(app.playerChar, app.enemy)) {
+        //     app.stage.removeChild(app.enemy);
+        //     app.enemy = new ball(this.stage, "ball", 75, 75, 40);
+        //     app.stage.addChild(app.enemy);
+        // }
+
+        // app.bullet.update(dt);
         
         // var rotation = app.playerChar.rotation / 360 * 2 * Math.PI;
 
