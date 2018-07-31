@@ -7,7 +7,8 @@ var app = {
         a : { keycode: 65, isPressed: false },
         w : { keycode: 87, isPressed: false },
         d : { keycode: 68, isPressed: false },
-        s : { keycode: 83, isPressed: false }
+        s : { keycode: 83, isPressed: false },
+        spacebar : { keycode: 32, isPressed: false }
     },
     mousePos: {
         x: 0,
@@ -17,6 +18,7 @@ var app = {
     assets: null,
     playerChar: null,
     enemy: null,
+    bullet: null,
     debugLine: null,
     setupCanvas: function() {
         var canvas = document.getElementById("game");
@@ -50,22 +52,26 @@ var app = {
         this.stage.on("stagemousemove", function(event) {
             app.mousePos.x = Math.floor(event.stageX);
             app.mousePos.y = Math.floor(event.stageY);
-            console.log("AAAAAAAAAAAAAAAAAAAAA: ( " + app.mousePos.x + ", " + app.mousePos.y + ")");
+            // console.log("AAAAAAAAAAAAAAAAAAAAA: ( " + app.mousePos.x + ", " + app.mousePos.y + ")");
         });
 
-        this.playerChar = new createjs.Shape();
-        this.playerChar.graphics.beginFill('#fffff').drawRect(0, 0, 25, 25);
-        // this.playerChar.getBounds(this.playerChar.setBounds(12.5,12.5,0,0));
-        this.playerChar.x = this.SCREEN_WIDTH/2;
-        this.playerChar.y = this.SCREEN_HEIGHT/2;
-        this.stage.addChild(this.playerChar);  
+        // this.playerChar = new createjs.Shape();
+        // this.playerChar.graphics.beginFill('#fffff').drawRect(0, 0, 25, 25);
+        // this.playerChar.setBounds(0,0,25,25);
+        // this.playerChar.regX = 12.5;
+        // this.playerChar.regY = 12.5;
+        // this.playerChar.x = this.SCREEN_WIDTH/2;
+        // this.playerChar.y = this.SCREEN_HEIGHT/2;
+        // this.stage.addChild(this.playerChar);  
+
+        this.playerChar = new Player("player", app.SCREEN_WIDTH/2, app.SCREEN_HEIGHT/2, 25, 25);
 
         this.debugLine = new createjs.Shape();
-        this.debugLine.graphics.beginStroke('00f').moveTo(this.playerChar.x, this.playerChar.y).lineTo(app.mousePos.x, app.mousePos.y);
+        this.debugLine.graphics.beginStroke('00f').moveTo(this.playerChar.pos.x, this.playerChar.pos.y).lineTo(app.mousePos.x, app.mousePos.y);
         this.stage.addChild(this.debugLine);
 
         this.stage.on("stagemousedown", function(event) {
-            
+            console.log("jkjkjk");
         });
 
         document.onkeydown = this.handleKeyDown;
@@ -80,36 +86,39 @@ var app = {
         app.stage.update(event);
         var dt = event.delta / 1000;
         app.elapsedTime += dt;
-        app.enemy.update(dt);
-
+        
         app.debugLine.graphics.clear();
-        app.debugLine.graphics.beginStroke('00f').moveTo(app.playerChar.x, app.playerChar.y).lineTo(app.mousePos.x, app.mousePos.y);
+        app.debugLine.graphics.beginStroke('00f').moveTo(app.playerChar.pos.x, app.playerChar.pos.y).lineTo(app.mousePos.x, app.mousePos.y);
         var ROT_SPEED = 100;
         var MOVE_SPEED = 100;
-        
-        var rotation = app.playerChar.rotation / 360 * 2 * Math.PI;
 
-        if(app.keyboard.w.isPressed)
-        {
-            app.playerChar.y -= MOVE_SPEED * dt;
-        }
+        app.enemy.update(dt);
+        app.playerChar.update(dt);
+        app.bullet.update(dt);
         
-        if(app.keyboard.s.isPressed)
-        {
-            app.playerChar.y += MOVE_SPEED * dt;
-        }
-        
-        if(app.keyboard.d.isPressed) {
-            app.playerChar.x += MOVE_SPEED * dt;
-        }
-        
-        if(app.keyboard.a.isPressed) {
-            app.playerChar.x -= MOVE_SPEED * dt;
-        }
+        // var rotation = app.playerChar.rotation / 360 * 2 * Math.PI;
 
-        var angleRad = Math.atan2(app.mousePos.y - app.playerChar.y, app.mousePos.x - app.playerChar.x);
-        var angleDeg = angleRad * 180 / Math.PI;
-        app.playerChar.rotation = angleDeg;
+        // if(app.keyboard.w.isPressed)
+        // {
+        //     app.playerChar.y -= MOVE_SPEED * dt;
+        // }
+        
+        // if(app.keyboard.s.isPressed)
+        // {
+        //     app.playerChar.y += MOVE_SPEED * dt;
+        // }
+        
+        // if(app.keyboard.d.isPressed) {
+        //     app.playerChar.x += MOVE_SPEED * dt;
+        // }
+        
+        // if(app.keyboard.a.isPressed) {
+        //     app.playerChar.x -= MOVE_SPEED * dt;
+        // }
+
+        // var angleRad = Math.atan2(app.mousePos.y - app.playerChar.y, app.mousePos.x - app.playerChar.x);
+        // var angleDeg = angleRad * 180 / Math.PI;
+        // app.playerChar.rotation = angleDeg;
     },
     handleKeyDown: function(event)
     {
@@ -122,6 +131,7 @@ var app = {
             case app.keyboard.s.keycode:        app.keyboard.s.isPressed = true; return false;
             case app.keyboard.j.keycode:        app.keyboard.j.isPressed = true; return false;
             case app.keyboard.k.keyCode:        app.keyboard.k.isPressed = true; return false;
+            case app.keyboard.spacebar.keyCode:        app.keyboard.spacebar.isPressed = true; return false;
         }
     },
     handleKeyUp: function(event)
@@ -135,6 +145,7 @@ var app = {
             case app.keyboard.s.keycode:        app.keyboard.s.isPressed = false; return false;
             case app.keyboard.j.keycode:        app.keyboard.j.isPressed = false; return false;
             case app.keyboard.k.keyCode:        app.keyboard.k.isPressed = false; return false;
+            case app.keyboard.spacebar.keyCode:        app.keyboard.spacebar.isPressed = false; return false;
         }
     }
 }
