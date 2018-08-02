@@ -18,7 +18,7 @@ var app = {
     assets: null,
     playerChar: null,
     enemy: null,
-    bullet: null,
+    bullets: [],
     enemy2: null,
     enemy3: null,
     debugLine: null,
@@ -61,17 +61,7 @@ var app = {
         this.stage.on("stagemousemove", function(event) {
             app.mousePos.x = Math.floor(event.stageX);
             app.mousePos.y = Math.floor(event.stageY);
-            // console.log("AAAAAAAAAAAAAAAAAAAAA: ( " + app.mousePos.x + ", " + app.mousePos.y + ")");
         });
-
-        // this.playerChar = new createjs.Shape();
-        // this.playerChar.graphics.beginFill('#fffff').drawRect(0, 0, 25, 25);
-        // this.playerChar.setBounds(0,0,25,25);
-        // this.playerChar.regX = 12.5;
-        // this.playerChar.regY = 12.5;
-        // this.playerChar.x = this.SCREEN_WIDTH/2;
-        // this.playerChar.y = this.SCREEN_HEIGHT/2;
-        // this.stage.addChild(this.playerChar);  
 
         this.playerChar = new Player("player", app.SCREEN_WIDTH/2, app.SCREEN_HEIGHT/2, 25, 25, 25);
 
@@ -81,14 +71,15 @@ var app = {
 
         this.stage.on("stagemousedown", function(event) {
             console.log("jkjkjk");
+            app.bullets.push(new Bullet("Bullet", app.playerChar.pos.x, app.playerChar.pos.y, 5));
         });
 
         document.onkeydown = this.handleKeyDown;
         document.onkeyup = this.handleKeyUp;
 
-        this.enemy = new ball(this.stage, "ball", 75, 75, 40);
+        this.enemy = new Enemy(this.stage, "ball", 75, 75, 40);
 
-        this.enemy2 = new ball2(this.stage, "ball2", app.SCREEN_WIDTH - 75, app.SCREEN_HEIGHT - 75, 10);
+        this.enemy2 = new Enemy2(this.stage, "ball2", app.SCREEN_WIDTH - 75, app.SCREEN_HEIGHT - 75, 10);
 
         createjs.Ticker.addEventListener("tick", this.update);
         createjs.Ticker.framerate = this.FPS;   
@@ -107,37 +98,9 @@ var app = {
         app.enemy.update(dt);
         app.enemy2.update(dt);
 
-        // if(areActorsColliding(app.playerChar, app.enemy)) {
-        //     app.stage.removeChild(app.enemy);
-        //     app.enemy = new ball(this.stage, "ball", 75, 75, 40);
-        //     app.stage.addChild(app.enemy);
-        // }
-
-        // app.bullet.update(dt);
-        
-        // var rotation = app.playerChar.rotation / 360 * 2 * Math.PI;
-
-        // if(app.keyboard.w.isPressed)
-        // {
-        //     app.playerChar.y -= MOVE_SPEED * dt;
-        // }
-        
-        // if(app.keyboard.s.isPressed)
-        // {
-        //     app.playerChar.y += MOVE_SPEED * dt;
-        // }
-        
-        // if(app.keyboard.d.isPressed) {
-        //     app.playerChar.x += MOVE_SPEED * dt;
-        // }
-        
-        // if(app.keyboard.a.isPressed) {
-        //     app.playerChar.x -= MOVE_SPEED * dt;
-        // }
-
-        // var angleRad = Math.atan2(app.mousePos.y - app.playerChar.y, app.mousePos.x - app.playerChar.x);
-        // var angleDeg = angleRad * 180 / Math.PI;
-        // app.playerChar.rotation = angleDeg;
+        for(var i = 0; i < app.bullets.length; i++) {
+            app.bullets[i].update(dt);
+        }
     },
     handleKeyDown: function(event)
     {
