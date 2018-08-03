@@ -19,8 +19,9 @@ var app = {
     playerChar: null,
     enemy: null,
     bullets: [],
-    enemy2: null,
-    enemy3: null,
+    enemy1Array: [],
+    enemy2Array: [],
+    enemy3Array: [],
     debugLine: null,
     setupCanvas: function() {
         var canvas = document.getElementById("game");
@@ -77,9 +78,22 @@ var app = {
         document.onkeydown = this.handleKeyDown;
         document.onkeyup = this.handleKeyUp;
 
-        this.enemy = new Enemy(this.stage, "ball", 75, 75, 40);
-
-        this.enemy2 = new Enemy2(this.stage, "ball2", app.SCREEN_WIDTH - 75, app.SCREEN_HEIGHT - 75, 10);
+        // this.enemy = new Enemy(this.stage, "ball", 75, 75, 40);
+        for(var i = 0; i < 3; i++){
+            var x = Math.floor(Math.random() * this.SCREEN_WIDTH);
+            var y = Math.floor(Math.random() * this.SCREEN_HEIGHT);
+            app.enemy1Array.push(new Enemy(this.stage, "ball", x, y, 40));
+        }
+        for(var i = 0; i < 3; i++){
+            var x = Math.floor(Math.random() * this.SCREEN_WIDTH);
+            var y = Math.floor(Math.random() * this.SCREEN_HEIGHT);
+            app.enemy2Array.push(new Enemy(this.stage, "ball2", x, y, 10));
+        }
+        for(var i = 0; i < 3; i++){
+            var x = Math.floor(Math.random() * this.SCREEN_WIDTH);
+            var y = Math.floor(Math.random() * this.SCREEN_HEIGHT);
+            app.enemy3Array.push(new Enemy(this.stage, "ball3", x, y, 30));
+        }
 
         createjs.Ticker.addEventListener("tick", this.update);
         createjs.Ticker.framerate = this.FPS;   
@@ -95,8 +109,16 @@ var app = {
         var MOVE_SPEED = 100;
 
         app.playerChar.update(dt);
-        app.enemy.update(dt);
-        app.enemy2.update(dt);
+        // app.enemy.update(dt);
+        for(var i = 0; i < app.enemy1Array.length; i++){
+            app.enemy1Array[i].update(dt);
+        }
+        for(var i = 0; i < app.enemy2Array.length; i++){
+            app.enemy2Array[i].update(dt);
+        }
+        for(var i = 0; i < app.enemy3Array.length; i++){
+            app.enemy3Array[i].update(dt);
+        }
 
         for(var i = 0; i < app.bullets.length; i++) {
             app.bullets[i].update(dt);
