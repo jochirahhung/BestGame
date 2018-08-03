@@ -33,8 +33,8 @@ function Enemy(parent, nameString, x, y, r){
     this.onCollect = function() {
         app.stage.removeChild(ball);
         app.enemy1Array.splice(app.enemy1Array.indexOf(this), 1);
-        var x = Math.floor(Math.random() * app.SCREEN_WIDTH);
-        var y = Math.floor(Math.random() * app.SCREEN_HEIGHT);
+        var x = Math.floor(Math.random() * SCREEN_WIDTH);
+        var y = Math.floor(Math.random() * SCREEN_HEIGHT);
         // app.enemy1Array.push(new Enemy(app.stage, "ball", x, y, 40));
     }
 }
@@ -63,8 +63,8 @@ function Enemy2(parent, nameString, x, y, r){
     this.onCollect = function() {
         app.stage.removeChild(ball2);
         app.enemy2Array.splice(app.enemy2Array.indexOf(this), 1);
-        var x = Math.floor(Math.random() * app.SCREEN_WIDTH);
-        var y = Math.floor(Math.random() * app.SCREEN_HEIGHT);
+        var x = Math.floor(Math.random() * SCREEN_WIDTH);
+        var y = Math.floor(Math.random() * SCREEN_HEIGHT);
         app.enemy2Array.push(new Enemy2(app.stage, "ball2", x, y, 10));
     }
 }
@@ -93,8 +93,8 @@ function Enemy3(parent, nameString, x, y, r){
     this.onCollect = function() {
         app.stage.removeChild(ball3);
         app.enemy3Array.splice(app.enemy3Array.indexOf(this), 1);
-        var x = Math.floor(Math.random() * app.SCREEN_WIDTH);
-        var y = Math.floor(Math.random() * app.SCREEN_HEIGHT);
+        var x = Math.floor(Math.random() * SCREEN_WIDTH);
+        var y = Math.floor(Math.random() * SCREEN_HEIGHT);
         app.enemy3Array.push(new Enemy3(app.stage, "ball3", x, y, 30));
     }
 }

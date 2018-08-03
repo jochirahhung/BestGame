@@ -80,18 +80,18 @@ var app = {
 
         // this.enemy = new Enemy(this.stage, "ball", 75, 75, 40);
         for(var i = 0; i < 3; i++){
-            var x = Math.floor(Math.random() * this.SCREEN_WIDTH);
-            var y = Math.floor(Math.random() * this.SCREEN_HEIGHT);
+            var x = Math.floor(Math.random() * SCREEN_WIDTH);
+            var y = Math.floor(Math.random() * SCREEN_HEIGHT);
             app.enemy1Array.push(new Enemy(this.stage, "ball", x, y, 40));
         }
         for(var i = 0; i < 3; i++){
-            var x = Math.floor(Math.random() * this.SCREEN_WIDTH);
-            var y = Math.floor(Math.random() * this.SCREEN_HEIGHT);
+            var x = Math.floor(Math.random() * SCREEN_WIDTH);
+            var y = Math.floor(Math.random() * SCREEN_HEIGHT);
             app.enemy2Array.push(new Enemy(this.stage, "ball2", x, y, 10));
         }
         for(var i = 0; i < 3; i++){
-            var x = Math.floor(Math.random() * this.SCREEN_WIDTH);
-            var y = Math.floor(Math.random() * this.SCREEN_HEIGHT);
+            var x = Math.floor(Math.random() * SCREEN_WIDTH);
+            var y = Math.floor(Math.random() * SCREEN_HEIGHT);
             app.enemy3Array.push(new Enemy(this.stage, "ball3", x, y, 30));
         }
 
