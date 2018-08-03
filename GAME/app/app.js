@@ -1,7 +1,8 @@
+var SCREEN_WIDTH = 800;
+var SCREEN_HEIGHT = 600;
+
 var app = {
     stage: null,
-    SCREEN_WIDTH: 800,
-    SCREEN_HEIGHT: 600,
     FPS: 30,
     keyboard: {
         a : { keycode: 65, isPressed: false },
@@ -23,20 +24,19 @@ var app = {
     enemy2Array: [],
     enemy3Array: [],
     debugLine: null,
+    screen: null,
     setupCanvas: function() {
         var canvas = document.getElementById("game");
-        canvas.width = app.SCREEN_WIDTH;
-        canvas.height = app.SCREEN_HEIGHT;
+        canvas.width = SCREEN_WIDTH;
+        canvas.height = SCREEN_HEIGHT;
         this.stage = new createjs.Stage(canvas);
     },
     beginLoad: function() {
         manifest = [
-            {
-                src: "js/actor/actor.js"
-            },
-            {
-                src: "js/utilities.js"
-            }
+            { src: "js/actor/actor.js" },
+            { src: "js/utilities.js" },
+            { src: "js/ui/ui.js" },
+            { src: "js/ui/screen.js" }
         ];
         this.assets = new createjs.LoadQueue(true);
 
@@ -56,7 +56,7 @@ var app = {
         this.stage.enableMouseOver();
 
         var screen = new createjs.Shape();
-        screen.graphics.beginStroke('#000').drawRect(0, 0, app.SCREEN_WIDTH, app.SCREEN_HEIGHT);
+        screen.graphics.beginStroke('#000').drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         app.stage.addChild(screen);
 
         this.stage.on("stagemousemove", function(event) {
@@ -64,7 +64,7 @@ var app = {
             app.mousePos.y = Math.floor(event.stageY);
         });
 
-        this.playerChar = new Player("player", app.SCREEN_WIDTH/2, app.SCREEN_HEIGHT/2, 25, 25, 25);
+        this.playerChar = new Player("player", SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 25, 25, 25);
 
         this.debugLine = new createjs.Shape();
         this.debugLine.graphics.beginStroke('00f').moveTo(this.playerChar.pos.x, this.playerChar.pos.y).lineTo(app.mousePos.x, app.mousePos.y);
