@@ -11,10 +11,10 @@ Actor.prototype.update = function(dt)
 
 };
 
-function Enemy(parent, nameString, x, y, r){
+function Enemy(nameString, x, y, r){
     Actor.call(this, nameString, x, y, r);
     var ball = new createjs.Shape();
-    ball.graphics.beginStroke("#fffff").drawCircle(0, 0, r);
+    ball.graphics.beginStroke("#000").drawCircle(0, 0, r);
     ball.x = x;
     ball.y = y;
 
@@ -35,16 +35,16 @@ function Enemy(parent, nameString, x, y, r){
         app.enemy1Array.splice(app.enemy1Array.indexOf(this), 1);
         var x = Math.floor(Math.random() * SCREEN_WIDTH);
         var y = Math.floor(Math.random() * SCREEN_HEIGHT);
-        // app.enemy1Array.push(new Enemy(app.stage, "ball", x, y, 40));
+        app.enemy1Array.push(new Enemy("ball", x, y, 40));
     }
 }
 Enemy.prototype = Object.create(Actor.prototype);
 Enemy.prototype.constructor = Enemy;
 
-function Enemy2(parent, nameString, x, y, r){
+function Enemy2(nameString, x, y, r){
     Actor.call(this, nameString, x, y, r);
     var ball2 = new createjs.Shape();
-    ball2.graphics.beginStroke("#fffff").drawCircle(0, 0, r);
+    ball2.graphics.beginStroke("#000").drawCircle(0, 0, r);
     ball2.x = x;
     ball2.y = y;
 
@@ -65,16 +65,16 @@ function Enemy2(parent, nameString, x, y, r){
         app.enemy2Array.splice(app.enemy2Array.indexOf(this), 1);
         var x = Math.floor(Math.random() * SCREEN_WIDTH);
         var y = Math.floor(Math.random() * SCREEN_HEIGHT);
-        app.enemy2Array.push(new Enemy2(app.stage, "ball2", x, y, 10));
+        app.enemy2Array.push(new Enemy2("ball2", x, y, 10));
     }
 }
 Enemy2.prototype = Object.create(Actor.prototype);
 Enemy2.prototype.constructor = Enemy2;
 
-function Enemy3(parent, nameString, x, y, r){
+function Enemy3(nameString, x, y, r){
     Actor.call(this, nameString, x, y, r);
     var ball3 = new createjs.Shape();
-    ball3.graphics.beginStroke("#fffff").drawCircle(0, 0, r);
+    ball3.graphics.beginStroke("#000").drawCircle(0, 0, r);
     ball3.x = x;
     ball3.y = y;
 
@@ -95,7 +95,7 @@ function Enemy3(parent, nameString, x, y, r){
         app.enemy3Array.splice(app.enemy3Array.indexOf(this), 1);
         var x = Math.floor(Math.random() * SCREEN_WIDTH);
         var y = Math.floor(Math.random() * SCREEN_HEIGHT);
-        app.enemy3Array.push(new Enemy3(app.stage, "ball3", x, y, 30));
+        app.enemy3Array.push(new Enemy3("ball3", x, y, 30));
     }
 }
 Enemy3.prototype = Object.create(Actor.prototype);

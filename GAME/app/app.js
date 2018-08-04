@@ -82,17 +82,17 @@ var app = {
         for(var i = 0; i < 3; i++){
             var x = Math.floor(Math.random() * SCREEN_WIDTH);
             var y = Math.floor(Math.random() * SCREEN_HEIGHT);
-            app.enemy1Array.push(new Enemy(this.stage, "ball", x, y, 40));
+            app.enemy1Array.push(new Enemy("ball", x, y, 40));
         }
         for(var i = 0; i < 3; i++){
             var x = Math.floor(Math.random() * SCREEN_WIDTH);
             var y = Math.floor(Math.random() * SCREEN_HEIGHT);
-            app.enemy2Array.push(new Enemy(this.stage, "ball2", x, y, 10));
+            app.enemy2Array.push(new Enemy2("ball2", x, y, 10));
         }
         for(var i = 0; i < 3; i++){
             var x = Math.floor(Math.random() * SCREEN_WIDTH);
             var y = Math.floor(Math.random() * SCREEN_HEIGHT);
-            app.enemy3Array.push(new Enemy(this.stage, "ball3", x, y, 30));
+            app.enemy3Array.push(new Enemy3("ball3", x, y, 30));
         }
 
         createjs.Ticker.addEventListener("tick", this.update);
@@ -154,4 +154,4 @@ var app = {
     }
 }
 
-app.beginLoad();
+// app.beginLoad();
