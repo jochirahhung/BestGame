@@ -35,8 +35,8 @@ InstructionScreen.prototype.constructor = InstructionScreen;
 function GameplayScreen() {
     Screen.call(this, "gameplay_screen");
 }
-GameScreen.prototype = Object.create(createjs.Container.prototype);
-GameScreen.prototype.constructor = GameScreen;
+GameplayScreen.prototype = Object.create(createjs.Container.prototype);
+GameplayScreen.prototype.constructor = GameplayScreen;
 
 //game over screen
 function GameOverScreen(playAgainButton, mainMenuButton) {

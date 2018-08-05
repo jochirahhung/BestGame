@@ -1,9 +1,5 @@
-var SCREEN_WIDTH = 800;
-var SCREEN_HEIGHT = 600;
-
 var app = {
     stage: null,
-    FPS: 30,
     keyboard: {
         a : { keycode: 65, isPressed: false },
         w : { keycode: 87, isPressed: false },
@@ -27,6 +23,8 @@ var app = {
     BossArray: [],
     debugLine: null,
     screen: null,
+    gameState: 0,
+
     setupCanvas: function() {
         var canvas = document.getElementById("game");
         canvas.width = SCREEN_WIDTH;
@@ -39,7 +37,8 @@ var app = {
             { src: "js/utilities.js" },
             { src: "js/ui/ui.js" },
             { src: "js/ui/screen.js" },
-            { src: "js/actor/playerSettings.js"}
+            { src: "js/actor/playerSettings.js"},
+            { src: "js/settings.js" }
         ];
         this.assets = new createjs.LoadQueue(true);
 
@@ -67,82 +66,57 @@ var app = {
             app.mousePos.y = Math.floor(event.stageY);
         });
 
-        this.playerChar = new Player("player", SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 25, 25, 25);
-
-        this.debugLine = new createjs.Shape();
-        this.debugLine.graphics.beginStroke('00f').moveTo(this.playerChar.pos.x, this.playerChar.pos.y).lineTo(app.mousePos.x, app.mousePos.y);
-        this.stage.addChild(this.debugLine);
-
-        this.stage.on("stagemousedown", function(event) {
-            console.log("jkjkjk");
-            if(app.fireRate <= 0) {
-                app.bullets.push(new Bullet("Bullet", app.playerChar.pos.x, app.playerChar.pos.y, 5));
-                app.fireRate = .5;
-            }
-        });
+        app.setState(STATES.MAIN_MENU);
 
         document.onkeydown = this.handleKeyDown;
         document.onkeyup = this.handleKeyUp;
 
-        for(var i = 0; i < 3; i++){
-            var x = Math.floor(Math.random() * SCREEN_WIDTH);
-            var y = Math.floor(Math.random() * SCREEN_HEIGHT);
-            app.enemy1Array.push(new Enemy("ball", x, y, 40));
-        }
-        for(var i = 0; i < 3; i++){
-            var x = Math.floor(Math.random() * SCREEN_WIDTH);
-            var y = Math.floor(Math.random() * SCREEN_HEIGHT);
-            app.enemy2Array.push(new Enemy2("ball2", x, y, 10));
-        }
-        for(var i = 0; i < 3; i++){
-            var x = Math.floor(Math.random() * SCREEN_WIDTH);
-            var y = Math.floor(Math.random() * SCREEN_HEIGHT);
-            app.enemy3Array.push(new Enemy3("ball3", x, y, 30));
-        }
-
         createjs.Ticker.addEventListener("tick", this.update);
-        createjs.Ticker.framerate = this.FPS;   
+        createjs.Ticker.framerate = FPS;   
     },
     update: function(event) {
         app.stage.update(event);
         var dt = event.delta / 1000;
         app.elapsedTime += dt;
-
-        app.debugLine.graphics.clear();
-        app.debugLine.graphics.beginStroke('00f').moveTo(app.playerChar.pos.x, app.playerChar.pos.y).lineTo(app.mousePos.x, app.mousePos.y);
-        var ROT_SPEED = 100;
-        var MOVE_SPEED = 100;
-
-        app.playerChar.update(dt);
-        if(app.fireRate > 0) {
-            app.fireRate -= dt;
+        //state machine update (update as necessary)
+        if (app.gameState === STATES.GAMEPLAY) {
+            app.debugLine.graphics.clear();
+            app.debugLine.graphics.beginStroke('00f').moveTo(app.playerChar.pos.x, app.playerChar.pos.y).lineTo(app.mousePos.x, app.mousePos.y);
+            var ROT_SPEED = 100;
+            var MOVE_SPEED = 100;
+    
+            app.playerChar.update(dt);
+            if(app.fireRate > 0) {
+                app.fireRate -= dt;
+            }
+    
+            if(app.bossRate > 0) {
+                app.bossRate -= dt;
+            } else {
+                var x = Math.floor(Math.random() * SCREEN_WIDTH);
+                var y = Math.floor(Math.random() * SCREEN_HEIGHT);
+                app.BossArray.push(new Boss("boss", x, y, 75, 75, 35));
+                app.bossRate = 15;
+            }
+            
+            for(var i = 0; i < app.BossArray.length; i++) {
+                app.BossArray[i].update(dt);
+            }
+            for(var i = 0; i < app.enemy1Array.length; i++){
+                app.enemy1Array[i].update(dt);
+            }
+            for(var i = 0; i < app.enemy2Array.length; i++){
+                app.enemy2Array[i].update(dt);
+            }
+            for(var i = 0; i < app.enemy3Array.length; i++){
+                app.enemy3Array[i].update(dt);
+            }
+    
+            for(var i = 0; i < app.bullets.length; i++) {
+                app.bullets[i].update(dt);
+            }
         }
 
-        if(app.bossRate > 0) {
-            app.bossRate -= dt;
-        } else {
-            var x = Math.floor(Math.random() * SCREEN_WIDTH);
-            var y = Math.floor(Math.random() * SCREEN_HEIGHT);
-            app.BossArray.push(new Boss("boss", x, y, 75, 75, 35));
-            app.bossRate = 15;
-        }
-        
-        for(var i = 0; i < app.BossArray.length; i++) {
-            app.BossArray[i].update(dt);
-        }
-        for(var i = 0; i < app.enemy1Array.length; i++){
-            app.enemy1Array[i].update(dt);
-        }
-        for(var i = 0; i < app.enemy2Array.length; i++){
-            app.enemy2Array[i].update(dt);
-        }
-        for(var i = 0; i < app.enemy3Array.length; i++){
-            app.enemy3Array[i].update(dt);
-        }
-
-        for(var i = 0; i < app.bullets.length; i++) {
-            app.bullets[i].update(dt);
-        }
     },
     handleKeyDown: function(event)
     {
@@ -170,6 +144,89 @@ var app = {
             case app.keyboard.j.keycode:        app.keyboard.j.isPressed = false; return false;
             case app.keyboard.k.keyCode:        app.keyboard.k.isPressed = false; return false;
             case app.keyboard.spacebar.keyCode:        app.keyboard.spacebar.isPressed = false; return false;
+        }
+    },
+
+    //state machine
+    setState: function(newState) {
+        this.gameState = newState;
+
+        this.stage.removeChild(this.screen);
+
+        switch (newState) {
+            case STATES.MAIN_MENU:
+                this.screen = new LandingScreen(
+                    //play button logic
+                    function() {
+                        app.setState(STATES.GAMEPLAY);
+                    },
+                    //instruction button logic
+                    function() {
+                        app.setState(STATES.INSTRUCTIONS);
+                    }
+                );
+                // this.stage.addChild(this.screen);
+                break;
+            case STATES.GAMEPLAY:
+                this.screen = new GameplayScreen();
+                this.resetGame();
+                break;
+            case STATES.INSTRUCTIONS:
+                this.screen = new InstructionScreen(
+                    //back button logic
+                    function() {
+                        app.setState(STATES.MAIN_MENU);
+                    }
+                );
+                break;
+            case STATES.GAME_OVER:
+                this.screen = new GameOverScreen(
+                    //play again button logic
+                    function() {
+                        app.setState(STATES.GAMEPLAY);
+                    },
+                    //main menu button logic
+                    function() {
+                        app.setState(STATES.MAIN_MENU);
+                    }
+                );
+                break;
+            default:
+                console.log("ERROR: GAMESTATE DEFAULT CASE");
+                break;
+        }
+        this.stage.addChild(this.screen);
+    },
+
+    resetGame: function() {
+        this.playerChar = new Player("player", SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 25, 25, 25);
+
+        this.debugLine = new createjs.Shape();
+        this.debugLine.graphics.beginStroke('00f').moveTo(this.playerChar.pos.x, this.playerChar.pos.y).lineTo(app.mousePos.x, app.mousePos.y);
+        this.stage.addChild(this.debugLine);
+
+        this.stage.on("stagemousedown", function(event) {
+            console.log("jkjkjk");
+            if(app.fireRate <= 0) {
+                app.bullets.push(new Bullet("Bullet", app.playerChar.pos.x, app.playerChar.pos.y, 5));
+                app.fireRate = .5;
+            }
+        });
+
+        for(var i = 0; i < 3; i++){
+            var x = Math.floor(Math.random() * SCREEN_WIDTH);
+            var y = Math.floor(Math.random() * SCREEN_HEIGHT);
+            app.enemy1Array.push(new Enemy("ball", x, y, 40));
+        }
+        for(var i = 0; i < 3; i++){
+            var x = Math.floor(Math.random() * SCREEN_WIDTH);
+            var y = Math.floor(Math.random() * SCREEN_HEIGHT);
+            app.enemy2Array.push(new Enemy2("ball2", x, y, 10));
+        }
+        for(var i = 0; i < 3; i++){
+            var x = Math.floor(Math.random() * SCREEN_WIDTH);
+            var y = Math.floor(Math.random() * SCREEN_HEIGHT);
+            app.enemy3Array.push(new Enemy3("ball3", x, y, 30));
         }
     }
 }
