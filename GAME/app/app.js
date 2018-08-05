@@ -15,7 +15,8 @@ var app = {
         x: 0,
         y: 0
     },
-
+    fireRate: 0,
+    bossRate: 15,
     assets: null,
     playerChar: null,
     enemy: null,
@@ -23,6 +24,7 @@ var app = {
     enemy1Array: [],
     enemy2Array: [],
     enemy3Array: [],
+    BossArray: [],
     debugLine: null,
     screen: null,
     setupCanvas: function() {
@@ -72,13 +74,15 @@ var app = {
 
         this.stage.on("stagemousedown", function(event) {
             console.log("jkjkjk");
-            app.bullets.push(new Bullet("Bullet", app.playerChar.pos.x, app.playerChar.pos.y, 5));
+            if(app.fireRate <= 0) {
+                app.bullets.push(new Bullet("Bullet", app.playerChar.pos.x, app.playerChar.pos.y, 5));
+                app.fireRate = .5;
+            }
         });
 
         document.onkeydown = this.handleKeyDown;
         document.onkeyup = this.handleKeyUp;
 
-        // this.enemy = new Enemy(this.stage, "ball", 75, 75, 40);
         for(var i = 0; i < 3; i++){
             var x = Math.floor(Math.random() * SCREEN_WIDTH);
             var y = Math.floor(Math.random() * SCREEN_HEIGHT);
@@ -109,7 +113,22 @@ var app = {
         var MOVE_SPEED = 100;
 
         app.playerChar.update(dt);
-        // app.enemy.update(dt);
+        if(app.fireRate > 0) {
+            app.fireRate -= dt;
+        }
+
+        if(app.bossRate > 0) {
+            app.bossRate -= dt;
+        } else {
+            var x = Math.floor(Math.random() * SCREEN_WIDTH);
+            var y = Math.floor(Math.random() * SCREEN_HEIGHT);
+            app.BossArray.push(new Boss("boss", x, y, 75, 75, 75));
+            app.bossRate = 15;
+        }
+        
+        for(var i = 0; i < app.BossArray.length; i++) {
+            app.BossArray[i].update(dt);
+        }
         for(var i = 0; i < app.enemy1Array.length; i++){
             app.enemy1Array[i].update(dt);
         }

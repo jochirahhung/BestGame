@@ -101,6 +101,96 @@ function Enemy3(nameString, x, y, r){
 Enemy3.prototype = Object.create(Actor.prototype);
 Enemy3.prototype.constructor = Enemy3;
 
+function Enemy3(nameString, x, y, r){
+    Actor.call(this, nameString, x, y, r);
+    var ball3 = new createjs.Shape();
+    ball3.graphics.beginStroke("#000").drawCircle(0, 0, r);
+    ball3.x = x;
+    ball3.y = y;
+
+    app.stage.addChild(ball3);
+
+    this.update = function(dt){
+        var angleRad = Math.atan2(app.playerChar.pos.y - this.pos.y, app.playerChar.pos.x - this.pos.x);
+        var angleDeg = angleRad * 180 / Math.PI;
+        this.rotation = angleDeg;
+        this.pos.x += Math.cos(angleRad) * 25 * dt;
+        this.pos.y += Math.sin(angleRad) * 25 * dt;
+        ball3.x = this.pos.x;
+        ball3.y = this.pos.y;
+    }
+
+    this.onCollect = function() {
+        app.stage.removeChild(ball3);
+        app.enemy3Array.splice(app.enemy3Array.indexOf(this), 1);
+        var x = Math.floor(Math.random() * SCREEN_WIDTH);
+        var y = Math.floor(Math.random() * SCREEN_HEIGHT);
+        app.enemy3Array.push(new Enemy3("ball3", x, y, 30));
+    }
+}
+Enemy3.prototype = Object.create(Actor.prototype);
+Enemy3.prototype.constructor = Enemy3;
+
+function Boss(nameString, x, y, r){
+    Actor.call(this, nameString, x, y, r);
+    var bossCircle = new createjs.Shape();
+    bossCircle.graphics.beginStroke("#000").drawCircle(0, 0, r);
+    bossCircle.x = x;
+    bossCircle.y = y;
+
+    app.stage.addChild(bossCircle);
+
+    this.update = function(dt){
+        var angleRad = Math.atan2(app.playerChar.pos.y - this.pos.y, app.playerChar.pos.x - this.pos.x);
+        var angleDeg = angleRad * 180 / Math.PI;
+        this.rotation = angleDeg;
+        this.pos.x += Math.cos(angleRad) * 25 * dt;
+        this.pos.y += Math.sin(angleRad) * 25 * dt;
+        bossCircle.x = this.pos.x;
+        bossCircle.y = this.pos.y;
+    }
+
+    this.onCollect = function() {
+        app.stage.removeChild(bossCircle);
+        app.BossArray.splice(app.BossArray.indexOf(this), 1);
+        var x = Math.floor(Math.random() * SCREEN_WIDTH);
+        var y = Math.floor(Math.random() * SCREEN_HEIGHT);
+        app.BossArray.push(new Boss("bossCircle", x, y, 30));
+    }
+}
+Boss.prototype = Object.create(Actor.prototype);
+Boss.prototype.constructor = Boss;
+
+function Boss(nameString, x, y, width, height, r){
+    Actor.call(this, nameString, x, y, r);
+    var bossCircle = new createjs.Shape();
+    bossCircle.graphics.beginFill("#F00").drawRect(0, 0, width, height);
+    bossCircle.x = x;
+    bossCircle.y = y;
+
+    app.stage.addChild(bossCircle);
+
+    this.update = function(dt){
+        var angleRad = Math.atan2(app.playerChar.pos.y - this.pos.y, app.playerChar.pos.x - this.pos.x);
+        var angleDeg = angleRad * 180 / Math.PI;
+        this.rotation = angleDeg;
+        this.pos.x += Math.cos(angleRad) * 5 * dt;
+        this.pos.y += Math.sin(angleRad) * 5 * dt;
+        bossCircle.x = this.pos.x;
+        bossCircle.y = this.pos.y;
+    }
+
+    this.onCollect = function() {
+        app.stage.removeChild(bossCircle);
+        app.BossArray.splice(app.BossArray.indexOf(this), 1);
+        var x = Math.floor(Math.random() * SCREEN_WIDTH);
+        var y = Math.floor(Math.random() * SCREEN_HEIGHT);
+        app.BossArray.push(new Boss("boss", x, y, 30));
+    }
+}
+Boss.prototype = Object.create(Actor.prototype);
+Boss.prototype.constructor = Boss;
+
 function Player(nameString, x, y, width, height, r) {
     Actor.call(this, nameString, x, y, r);
 
@@ -134,6 +224,12 @@ function Player(nameString, x, y, width, height, r) {
         if(app.keyboard.a.isPressed) {
             app.playerChar.pos.x -= 150 * dt;
         }
+
+        app.BossArray.forEach(function(entry){
+            if(areActorsColliding(this, entry)) {
+                entry.onCollect();
+            }
+        }, this);
 
         app.enemy1Array.forEach(function(entry){
             if(areActorsColliding(this, entry)) {
@@ -179,6 +275,13 @@ function Bullet(nameString, x, y, r) {
         this.pos.y += Math.sin(angleRad) * 150 * dt;
         bullet.x = this.pos.x;
         bullet.y = this.pos.y;
+
+        app.BossArray.forEach(function(entry){
+            if(areActorsColliding(this, entry)) {
+                this.onCollect();
+                entry.onCollect();
+            }
+        }, this);
 
         app.enemy1Array.forEach(function(entry){
             if(areActorsColliding(this, entry)) {
