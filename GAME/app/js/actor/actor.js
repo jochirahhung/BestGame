@@ -36,7 +36,6 @@ function Enemy(nameString, x, y, r){
     this.onCollect = function(entry) {
         this.stats.health -= entry.stats.dmg;
         if(this.stats.health < 1) {
-            console.log(this.stats.health);
             app.stage.removeChild(ball);
             app.enemy1Array.splice(app.enemy1Array.indexOf(this), 1);
             var x = Math.floor(Math.random() * SCREEN_WIDTH);
@@ -71,7 +70,7 @@ function Enemy2(nameString, x, y, r){
 
     this.onCollect = function(entry) {
         this.stats.health -= entry.stats.dmg;
-        if(this.stats.health) {
+        if(this.stats.health < 1) {
             app.stage.removeChild(ball2);
             app.enemy2Array.splice(app.enemy2Array.indexOf(this), 1);
             var x = Math.floor(Math.random() * SCREEN_WIDTH);
@@ -106,7 +105,7 @@ function Enemy3(nameString, x, y, r){
 
     this.onCollect = function(entry) {
         this.stats.health -= entry.stats.dmg;
-        if(this.stats.health) {
+        if(this.stats.health < 1) {
             app.stage.removeChild(ball3);
             app.enemy3Array.splice(app.enemy3Array.indexOf(this), 1);
             var x = Math.floor(Math.random() * SCREEN_WIDTH);
@@ -126,6 +125,9 @@ function Boss(nameString, x, y, width, height, r){
     bossCircle.graphics.beginFill("#F00").drawRect(0, 0, width, height);
     bossCircle.x = x;
     bossCircle.y = y;
+    bossCircle.setBounds(0, 0, width, height);
+    bossCircle.regX = width/2;
+    bossCircle.regY = height/2;
 
     app.stage.addChild(bossCircle);
 
@@ -141,13 +143,21 @@ function Boss(nameString, x, y, width, height, r){
 
     this.onCollect = function(entry) {
         this.stats.health -= entry.stats.dmg;
-        if(this.stats.health) {
-            app.stage.removeChild(bossCircle);
-            app.BossArray.splice(app.BossArray.indexOf(this), 1);
-            var x = Math.floor(Math.random() * SCREEN_WIDTH);
-            var y = Math.floor(Math.random() * SCREEN_HEIGHT);
-            app.BossArray.push(new Boss("boss", x, y, 30));
+        if(entry instanceof Bullet && this.stats.health < 1) {
+            thePlayer.bossKills++;
+            this.resetBoss();
+        } else if (entry instanceof Player && this.stats.health < 1) {
+            this.resetBoss();
         }
+        console.log(thePlayer.bossKills);
+    }
+
+    this.resetBoss = function() {
+        app.stage.removeChild(bossCircle);
+        app.BossArray.splice(app.BossArray.indexOf(this), 1);
+        var x = Math.floor(Math.random() * SCREEN_WIDTH);
+        var y = Math.floor(Math.random() * SCREEN_HEIGHT);
+        app.BossArray.push(new Boss("boss", x, y, 75, 75, 75));
     }
 }
 Boss.prototype = Object.create(Actor.prototype);
@@ -161,7 +171,7 @@ function Player(nameString, x, y, width, height, r) {
     player.graphics.beginFill('#fffff').drawRect(0, 0, width, height);
     player.x = x;
     player.y = y;
-    player.setBounds(0, 0, 25, 25);
+    player.setBounds(0, 0, width, height);
     player.regX = width/2;
     player.regY = height/2;
     app.stage.addChild(player);  
