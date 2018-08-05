@@ -74,7 +74,6 @@ var app = {
         this.stage.addChild(this.debugLine);
 
         this.stage.on("stagemousedown", function(event) {
-            console.log("jkjkjk");
             if(app.fireRate <= 0) {
                 app.bullets.push(new Bullet("Bullet", app.playerChar.pos.x, app.playerChar.pos.y, 5));
                 app.fireRate = .5;
