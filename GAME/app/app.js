@@ -38,7 +38,8 @@ var app = {
             { src: "js/actor/actor.js" },
             { src: "js/utilities.js" },
             { src: "js/ui/ui.js" },
-            { src: "js/ui/screen.js" }
+            { src: "js/ui/screen.js" },
+            { src: "js/actor/playerSettings.js"}
         ];
         this.assets = new createjs.LoadQueue(true);
 
@@ -122,7 +123,7 @@ var app = {
         } else {
             var x = Math.floor(Math.random() * SCREEN_WIDTH);
             var y = Math.floor(Math.random() * SCREEN_HEIGHT);
-            app.BossArray.push(new Boss("boss", x, y, 75, 75, 75));
+            app.BossArray.push(new Boss("boss", x, y, 75, 75, 35));
             app.bossRate = 15;
         }
         
@@ -172,5 +173,3 @@ var app = {
         }
     }
 }
-
-// app.beginLoad();
