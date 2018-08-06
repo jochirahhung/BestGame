@@ -94,7 +94,7 @@ var app = {
                 app.bossRate -= dt;
             } else {
                 var x = Math.floor(Math.random() * SCREEN_WIDTH);
-                var y = Math.floor(Math.random() * SCREEN_HEIGHT);
+                var y = Math.floor(Math.random() * (301)) + 200;
                 app.BossArray.push(new Boss("boss", x, y, 75, 75, 35));
                 app.bossRate = 15;
             }

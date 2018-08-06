@@ -38,7 +38,7 @@ function Enemy(nameString, x, y, r){
         if(this.stats.health < 1) {
             app.stage.removeChild(ball);
             app.enemy1Array.splice(app.enemy1Array.indexOf(this), 1);
-            var x = Math.floor(Math.random() * SCREEN_WIDTH);
+            var x = Math.floor(Math.random() * (201)) + 600;
             var y = Math.floor(Math.random() * SCREEN_HEIGHT);
             app.enemy1Array.push(new Enemy("ball", x, y, 40));
         }
@@ -74,7 +74,7 @@ function Enemy2(nameString, x, y, r){
             app.stage.removeChild(ball2);
             app.enemy2Array.splice(app.enemy2Array.indexOf(this), 1);
             var x = Math.floor(Math.random() * SCREEN_WIDTH);
-            var y = Math.floor(Math.random() * SCREEN_HEIGHT);
+            var y = Math.floor(Math.random() * (31)) + 50;
             app.enemy2Array.push(new Enemy2("ball2", x, y, 10));
         }
     }
