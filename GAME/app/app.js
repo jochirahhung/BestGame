@@ -213,12 +213,12 @@ var app = {
             }
         });
 
-        for(var i = 0; i < 3; i++){
+        for(var i = 0; i < 4; i++){
             var x = Math.floor(Math.random() * SCREEN_WIDTH);
             var y = Math.floor(Math.random() * SCREEN_HEIGHT);
             app.enemy1Array.push(new Enemy("ball", x, y, 40));
         }
-        for(var i = 0; i < 3; i++){
+        for(var i = 0; i < 2; i++){
             var x = Math.floor(Math.random() * SCREEN_WIDTH);
             var y = Math.floor(Math.random() * SCREEN_HEIGHT);
             app.enemy2Array.push(new Enemy2("ball2", x, y, 10));
