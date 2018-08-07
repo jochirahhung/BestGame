@@ -162,7 +162,7 @@ Boss.prototype.constructor = Boss;
 
 function Player(nameString, x, y, width, height, r) {
     Actor.call(this, nameString, x, y, r);
-    this.stats = { health: thePlayer.baseHealth, dmg: thePlayer.baseDmg }
+    this.stats = { health: thePlayer.baseHealth + thePlayer.specials.endurance, dmg: thePlayer.baseDmg }
 
     var player = new createjs.Shape();
     player.graphics.beginFill('#fffff').drawRect(0, 0, width, height);
@@ -171,7 +171,9 @@ function Player(nameString, x, y, width, height, r) {
     player.setBounds(0, 0, width, height);
     player.regX = width/2;
     player.regY = height/2;
-    app.stage.addChild(player);  
+    app.stage.addChild(player);
+
+    var moveSpeed = 150 + (thePlayer.specials.agility * 10);
 
     this.update = function(dt) {
         var angleRad = Math.atan2(app.mousePos.y - app.playerChar.pos.y, app.mousePos.x - app.playerChar.pos.x);
@@ -179,20 +181,20 @@ function Player(nameString, x, y, width, height, r) {
         app.playerChar.rotation = angleDeg;
         if(app.keyboard.w.isPressed)
         {
-            app.playerChar.pos.y -= 150 * dt;
+            app.playerChar.pos.y -= moveSpeed * dt;
         }
         
         if(app.keyboard.s.isPressed)
         {
-            app.playerChar.pos.y += 150 * dt;
+            app.playerChar.pos.y += moveSpeed * dt;
         }
         
         if(app.keyboard.d.isPressed) {
-            app.playerChar.pos.x += 150 * dt;
+            app.playerChar.pos.x += moveSpeed * dt;
         }
         
         if(app.keyboard.a.isPressed) {
-            app.playerChar.pos.x -= 150 * dt;
+            app.playerChar.pos.x -= moveSpeed * dt;
         }
 
         app.BossArray.forEach(function(entry){
@@ -241,7 +243,7 @@ Player.prototype.constructor = Player;
 function Bullet(nameString, x, y, r) {
     Actor.call(this, nameString, x, y, r);
 
-    this.stats = {dmg: 1};
+    this.stats = {dmg: 1 + (thePlayer.specials.strength / 2)};
 
     var bullet = new createjs.Shape();
     bullet.graphics.beginFill('#00ff00').drawCircle(0, 0, r);

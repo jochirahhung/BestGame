@@ -210,7 +210,7 @@ var app = {
             console.log("jkjkjk");
             if(app.fireRate <= 0) {
                 app.bullets.push(new Bullet("Bullet", app.playerChar.pos.x, app.playerChar.pos.y, 5));
-                app.fireRate = .5;
+                app.fireRate = 1 - (thePlayer.specials.perception / 10);
             }
         });
 
