@@ -153,6 +153,7 @@ var app = {
 
         this.stage.removeChild(this.screen);
 
+        console.log("SET STATES IS SETTING STATE TOO MUCH POSSIBLY");
         switch (newState) {
             case STATES.MAIN_MENU:
                 this.screen = new LandingScreen(

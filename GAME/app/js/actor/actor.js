@@ -200,29 +200,25 @@ function Player(nameString, x, y, width, height, r) {
 
         app.BossArray.forEach(function(entry){
             if(areActorsColliding(this, entry)) {
-                this.onCollect(entry);
-                entry.onCollect(this);
+                this.collisionCalc(entry);
             }
         }, this);
 
         app.enemy1Array.forEach(function(entry){
             if(areActorsColliding(this, entry)) {
-                this.onCollect(entry);
-                entry.onCollect(this);
+                this.collisionCalc(entry);
             }
         }, this);
         
         app.enemy2Array.forEach(function(entry){
             if(areActorsColliding(this, entry)) {
-                this.onCollect(entry);
-                entry.onCollect(this);
+                this.collisionCalc(entry);
             }
         }, this);
 
         app.enemy3Array.forEach(function(entry){
             if(areActorsColliding(this, entry)) {
-                this.onCollect(entry);
-                entry.onCollect(this);
+                this.collisionCalc(entry);
             }
         }, this);
 
@@ -235,6 +231,11 @@ function Player(nameString, x, y, width, height, r) {
         if(this.stats.health < 1) {
             console.log("Im dead yo");
         }
+    }
+
+    this.collisionCalc = function(entry) {
+        this.onCollect(entry);
+        entry.onCollect(this);
     }
 }
 Player.prototype = Object.create(Actor.prototype);
@@ -260,29 +261,25 @@ function Bullet(nameString, x, y, r) {
 
         app.BossArray.forEach(function(entry){
             if(areActorsColliding(this, entry)) {
-                this.onCollect();
-                entry.onCollect(this);
+                this.collisionCalc(entry);
             }
         }, this);
 
         app.enemy1Array.forEach(function(entry){
             if(areActorsColliding(this, entry)) {
-                this.onCollect();
-                entry.onCollect(this);
+                this.collisionCalc(entry);
             }
         }, this);
 
         app.enemy2Array.forEach(function(entry){
             if(areActorsColliding(this, entry)) {
-                this.onCollect();
-                entry.onCollect(this);
+                this.collisionCalc(entry);
             }
         }, this);
 
         app.enemy3Array.forEach(function(entry){
             if(areActorsColliding(this, entry)) {
-                this.onCollect();
-                entry.onCollect(this);
+                this.collisionCalc(entry);
             }
         }, this);
     }
@@ -290,6 +287,11 @@ function Bullet(nameString, x, y, r) {
     this.onCollect = function() {
         app.stage.removeChild(bullet);
         app.bullets.splice( app.bullets.indexOf(this), 1 );
+    }
+
+    this.collisionCalc = function(entry) {
+        this.onCollect();
+        entry.onCollect(this);
     }
 }
 Bullet.prototype = Object.create(Actor.prototype);
