@@ -14,7 +14,7 @@ Actor.prototype.update = function(dt)
 
 function Enemy(nameString, x, y, r){
     Actor.call(this, nameString, x, y, r);
-    this.stats = { health: 2, dmg: 2};
+    this.stats = { health: 3, dmg: 2};
 
     var ball = new createjs.Shape();
     ball.graphics.beginStroke("#000").drawCircle(0, 0, r);
@@ -27,8 +27,8 @@ function Enemy(nameString, x, y, r){
         var angleRad = Math.atan2(app.playerChar.pos.y - this.pos.y, app.playerChar.pos.x - this.pos.x);
         var angleDeg = angleRad * 180 / Math.PI;
         this.rotation = angleDeg;
-        this.pos.x += Math.cos(angleRad) * 25 * dt;
-        this.pos.y += Math.sin(angleRad) * 25 * dt;
+        this.pos.x += Math.cos(angleRad) * 35 * dt;
+        this.pos.y += Math.sin(angleRad) * 35 * dt;
         ball.x = this.pos.x;
         ball.y = this.pos.y;
     }
@@ -38,7 +38,7 @@ function Enemy(nameString, x, y, r){
         if(this.stats.health < 1) {
             app.stage.removeChild(ball);
             app.enemy1Array.splice(app.enemy1Array.indexOf(this), 1);
-            var x = Math.floor(Math.random() * SCREEN_WIDTH);
+            var x = Math.floor(Math.random() * (201)) + 600;
             var y = Math.floor(Math.random() * SCREEN_HEIGHT);
             app.enemy1Array.push(new Enemy("ball", x, y, 40));
         }
@@ -62,8 +62,8 @@ function Enemy2(nameString, x, y, r){
         var angleRad = Math.atan2(app.playerChar.pos.y - this.pos.y, app.playerChar.pos.x - this.pos.x);
         var angleDeg = angleRad * 180 / Math.PI;
         this.rotation = angleDeg;
-        this.pos.x += Math.cos(angleRad) * 50 * dt;
-        this.pos.y += Math.sin(angleRad) * 50 * dt;
+        this.pos.x += Math.cos(angleRad) * 70 * dt;
+        this.pos.y += Math.sin(angleRad) * 70 * dt;
         ball2.x = this.pos.x;
         ball2.y = this.pos.y;
     }
@@ -74,7 +74,7 @@ function Enemy2(nameString, x, y, r){
             app.stage.removeChild(ball2);
             app.enemy2Array.splice(app.enemy2Array.indexOf(this), 1);
             var x = Math.floor(Math.random() * SCREEN_WIDTH);
-            var y = Math.floor(Math.random() * SCREEN_HEIGHT);
+            var y = Math.floor(Math.random() * (31)) + 50;
             app.enemy2Array.push(new Enemy2("ball2", x, y, 10));
         }
     }
@@ -97,8 +97,8 @@ function Enemy3(nameString, x, y, r){
         var angleRad = Math.atan2(app.playerChar.pos.y - this.pos.y, app.playerChar.pos.x - this.pos.x);
         var angleDeg = angleRad * 180 / Math.PI;
         this.rotation = angleDeg;
-        this.pos.x += Math.cos(angleRad) * 25 * dt;
-        this.pos.y += Math.sin(angleRad) * 25 * dt;
+        this.pos.x += Math.cos(angleRad) * 50 * dt;
+        this.pos.y += Math.sin(angleRad) * 50 * dt;
         ball3.x = this.pos.x;
         ball3.y = this.pos.y;
     }
@@ -108,7 +108,7 @@ function Enemy3(nameString, x, y, r){
         if(this.stats.health < 1) {
             app.stage.removeChild(ball3);
             app.enemy3Array.splice(app.enemy3Array.indexOf(this), 1);
-            var x = Math.floor(Math.random() * SCREEN_WIDTH);
+            var x = Math.floor(Math.random() * (31)) + 50;
             var y = Math.floor(Math.random() * SCREEN_HEIGHT);
             app.enemy3Array.push(new Enemy3("ball3", x, y, 30));
         }
@@ -135,8 +135,8 @@ function Boss(nameString, x, y, width, height, r){
         var angleRad = Math.atan2(app.playerChar.pos.y - this.pos.y, app.playerChar.pos.x - this.pos.x);
         var angleDeg = angleRad * 180 / Math.PI;
         this.rotation = angleDeg;
-        this.pos.x += Math.cos(angleRad) * 5 * dt;
-        this.pos.y += Math.sin(angleRad) * 5 * dt;
+        this.pos.x += Math.cos(angleRad) * 25 * dt;
+        this.pos.y += Math.sin(angleRad) * 25 * dt;
         bossCircle.x = this.pos.x;
         bossCircle.y = this.pos.y;
     }
@@ -155,9 +155,6 @@ function Boss(nameString, x, y, width, height, r){
     this.resetBoss = function() {
         app.stage.removeChild(bossCircle);
         app.BossArray.splice(app.BossArray.indexOf(this), 1);
-        var x = Math.floor(Math.random() * SCREEN_WIDTH);
-        var y = Math.floor(Math.random() * SCREEN_HEIGHT);
-        app.BossArray.push(new Boss("boss", x, y, 75, 75, 75));
     }
 }
 Boss.prototype = Object.create(Actor.prototype);
