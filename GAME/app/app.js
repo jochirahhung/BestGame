@@ -192,6 +192,18 @@ var app = {
                     }
                 );
                 break;
+            case STATES.WIN_SCREEN:
+                this.screen = new WinScreen(
+                    //play again button logic
+                    function() {
+                        app.setState(STATES.GAMEPLAY);
+                    },
+                    //main menu button logic
+                    function() {
+                        app.setState(STATES.MAIN_MENU);
+                    }
+                );
+                break;
             default:
                 console.log("ERROR: GAMESTATE DEFAULT CASE");
                 break;

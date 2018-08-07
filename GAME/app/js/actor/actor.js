@@ -145,7 +145,11 @@ function Boss(nameString, x, y, width, height, r){
         this.stats.health -= entry.stats.dmg;
         if(entry instanceof Bullet && this.stats.health < 1) {
             thePlayer.bossKills++;
-            this.resetBoss();
+            if(thePlayer.bossKills >= 5) {
+                app.setState(STATES.WIN_SCREEN);
+            } else {
+                this.resetBoss();
+            }
         } else if (entry instanceof Player && this.stats.health < 1) {
             this.resetBoss();
         }
@@ -229,6 +233,7 @@ function Player(nameString, x, y, width, height, r) {
         this.stats.health -= entry.stats.dmg;
         if(this.stats.health < 1) {
             console.log("Im dead yo");
+            app.setState(STATES.GAME_OVER);
         }
     }
 
