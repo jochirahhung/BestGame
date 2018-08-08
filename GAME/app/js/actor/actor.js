@@ -27,8 +27,8 @@ function Enemy(nameString, x, y, r){
         var angleRad = Math.atan2(app.playerChar.pos.y - this.pos.y, app.playerChar.pos.x - this.pos.x);
         var angleDeg = angleRad * 180 / Math.PI;
         this.rotation = angleDeg;
-        this.pos.x += Math.cos(angleRad) * 35 * dt;
-        this.pos.y += Math.sin(angleRad) * 35 * dt;
+        this.pos.x += Math.cos(angleRad) * 40 * dt;
+        this.pos.y += Math.sin(angleRad) * 40 * dt;
         ball.x = this.pos.x;
         ball.y = this.pos.y;
     }
@@ -38,9 +38,8 @@ function Enemy(nameString, x, y, r){
         if(this.stats.health < 1) {
             app.stage.removeChild(ball);
             app.enemy1Array.splice(app.enemy1Array.indexOf(this), 1);
-            var x = Math.floor(Math.random() * (201)) + 600;
-            var y = Math.floor(Math.random() * SCREEN_HEIGHT);
-            app.enemy1Array.push(new Enemy("ball", x, y, 40));
+            var x = Math.floor(Math.random() * SCREEN_WIDTH);
+            app.enemy1Array.push(new Enemy("ball", x, 750, 40));
         }
     }
 }
@@ -62,8 +61,8 @@ function Enemy2(nameString, x, y, r){
         var angleRad = Math.atan2(app.playerChar.pos.y - this.pos.y, app.playerChar.pos.x - this.pos.x);
         var angleDeg = angleRad * 180 / Math.PI;
         this.rotation = angleDeg;
-        this.pos.x += Math.cos(angleRad) * 70 * dt;
-        this.pos.y += Math.sin(angleRad) * 70 * dt;
+        this.pos.x += Math.cos(angleRad) * 100 * dt;
+        this.pos.y += Math.sin(angleRad) * 100 * dt;
         ball2.x = this.pos.x;
         ball2.y = this.pos.y;
     }
@@ -74,8 +73,7 @@ function Enemy2(nameString, x, y, r){
             app.stage.removeChild(ball2);
             app.enemy2Array.splice(app.enemy2Array.indexOf(this), 1);
             var x = Math.floor(Math.random() * SCREEN_WIDTH);
-            var y = Math.floor(Math.random() * (31)) + 50;
-            app.enemy2Array.push(new Enemy2("ball2", x, y, 10));
+            app.enemy2Array.push(new Enemy2("ball2", x, 850, 10));
         }
     }
 }
@@ -97,8 +95,8 @@ function Enemy3(nameString, x, y, r){
         var angleRad = Math.atan2(app.playerChar.pos.y - this.pos.y, app.playerChar.pos.x - this.pos.x);
         var angleDeg = angleRad * 180 / Math.PI;
         this.rotation = angleDeg;
-        this.pos.x += Math.cos(angleRad) * 50 * dt;
-        this.pos.y += Math.sin(angleRad) * 50 * dt;
+        this.pos.x += Math.cos(angleRad) * 60 * dt;
+        this.pos.y += Math.sin(angleRad) * 60 * dt;
         ball3.x = this.pos.x;
         ball3.y = this.pos.y;
     }
@@ -108,9 +106,8 @@ function Enemy3(nameString, x, y, r){
         if(this.stats.health < 1) {
             app.stage.removeChild(ball3);
             app.enemy3Array.splice(app.enemy3Array.indexOf(this), 1);
-            var x = Math.floor(Math.random() * (31)) + 50;
-            var y = Math.floor(Math.random() * SCREEN_HEIGHT);
-            app.enemy3Array.push(new Enemy3("ball3", x, y, 30));
+            var x = Math.floor(Math.random() * SCREEN_WIDTH);
+            app.enemy3Array.push(new Enemy3("ball3", x, -200, 30));
         }
     }
 }

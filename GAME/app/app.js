@@ -94,8 +94,7 @@ var app = {
                 app.bossRate -= dt;
             } else {
                 var x = Math.floor(Math.random() * SCREEN_WIDTH);
-                var y = Math.floor(Math.random() * (301)) + 200;
-                app.BossArray.push(new Boss("boss", x, y, 75, 75, 35));
+                app.BossArray.push(new Boss("boss", x, 700, 75, 75, 35));
                 app.bossRate = 15;
             }
             
@@ -228,18 +227,15 @@ var app = {
 
         for(var i = 0; i < 4; i++){
             var x = Math.floor(Math.random() * SCREEN_WIDTH);
-            var y = Math.floor(Math.random() * SCREEN_HEIGHT);
-            app.enemy1Array.push(new Enemy("ball", x, y, 40));
+            app.enemy1Array.push(new Enemy("ball", x, 750, 40));
         }
         for(var i = 0; i < 2; i++){
             var x = Math.floor(Math.random() * SCREEN_WIDTH);
-            var y = Math.floor(Math.random() * SCREEN_HEIGHT);
-            app.enemy2Array.push(new Enemy2("ball2", x, y, 10));
+            app.enemy2Array.push(new Enemy2("ball2", x, 850, 10));
         }
         for(var i = 0; i < 3; i++){
             var x = Math.floor(Math.random() * SCREEN_WIDTH);
-            var y = Math.floor(Math.random() * SCREEN_HEIGHT);
-            app.enemy3Array.push(new Enemy3("ball3", x, y, 30));
+            app.enemy3Array.push(new Enemy3("ball3", x, -200, 30));
         }
     }
 }
