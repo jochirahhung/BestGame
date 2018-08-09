@@ -11,6 +11,8 @@ function LandingScreen(playButton, instructionsButton) {
     Screen.call(this, "landing_screen");
 
     ui.makeTitleText(this, "CRYPTIDS DECLASSIFIED", "60px", SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2) - 50);
+
+    
     
     ui.makeBasicButton(this, "PLAY", 400, 400, playButton);
     ui.makeBasicButton(this, "HOW TO PLAY", 400, 450, instructionsButton);

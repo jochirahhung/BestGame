@@ -226,16 +226,73 @@ var app = {
         });
 
         for(var i = 0; i < 4; i++){
-            var x = Math.floor(Math.random() * SCREEN_WIDTH);
-            app.enemy1Array.push(new Enemy("ball", x, 750, 40));
+            var randStart = Math.floor(Math.random() * 100);
+            var randScreenPos = Math.floor(Math.random() * 100);
+            if(randStart % 2 == 1) {
+                if (randScreenPos % 2 == 1) {
+                    var x = Math.floor(Math.random() * SCREEN_WIDTH);
+                    app.enemy1Array.push(new Enemy("ball", x, SCREEN_HEIGHT + 100, 40));
+                }
+                else if (randScreenPos % 2 == 0) {
+                    var x = Math.floor(Math.random() * SCREEN_WIDTH);
+                    app.enemy1Array.push(new Enemy("ball", x, -100, 40));
+                }
+            }else if (randStart % 2 == 0) {
+                if (randScreenPos % 2 == 1) {
+                    var y = Math.floor(Math.random() * SCREEN_HEIGHT);
+                    app.enemy1Array.push(new Enemy("ball", SCREEN_WIDTH + 100, y, 40));
+                }
+                else if (randScreenPos % 2 == 0) {
+                    var y = Math.floor(Math.random() * SCREEN_HEIGHT);
+                    app.enemy1Array.push(new Enemy("ball", -100, y, 40));
+                }
+            }
         }
         for(var i = 0; i < 2; i++){
-            var x = Math.floor(Math.random() * SCREEN_WIDTH);
-            app.enemy2Array.push(new Enemy2("ball2", x, 850, 10));
+            var randStart = Math.floor(Math.random() * 100);
+            var randScreenPos = Math.floor(Math.random() * 100);
+            if(randStart % 2 == 1) {
+                if (randScreenPos % 2 == 1) {
+                    var x = Math.floor(Math.random() * SCREEN_WIDTH);
+                    app.enemy2Array.push(new Enemy2("ball2", x, SCREEN_HEIGHT + 100, 10));
+                }
+                else if (randScreenPos % 2 == 0) {
+                    var x = Math.floor(Math.random() * SCREEN_WIDTH);
+                    app.enemy2Array.push(new Enemy2("ball2", x, -100, 10));
+                }
+            }else if (randStart % 2 == 0) {
+                if (randScreenPos % 2 == 1) {
+                    var y = Math.floor(Math.random() * SCREEN_HEIGHT);
+                    app.enemy2Array.push(new Enemy2("ball2", SCREEN_WIDTH + 100, y, 10));
+                }
+                else if (randScreenPos % 2 == 0) {
+                    var y = Math.floor(Math.random() * SCREEN_HEIGHT);
+                    app.enemy2Array.push(new Enemy2("ball2", -100, y, 10));
+                }
+            }
         }
         for(var i = 0; i < 3; i++){
-            var x = Math.floor(Math.random() * SCREEN_WIDTH);
-            app.enemy3Array.push(new Enemy3("ball3", x, -200, 30));
+            var randStart = Math.floor(Math.random() * 1);
+            var randScreenPos = Math.floor(Math.random() * 1);
+            if(randStart % 2 == 1) {
+                if (randScreenPos % 2 == 1) {
+                    var x = Math.floor(Math.random() * SCREEN_WIDTH);
+                    app.enemy3Array.push(new Enemy3("ball3", x, SCREEN_HEIGHT + 100, 30));
+                }
+                else if (randScreenPos % 2 == 0) {
+                    var x = Math.floor(Math.random() * SCREEN_WIDTH);
+                    app.enemy3Array.push(new Enemy3("ball3", x, -100, 30));
+                }
+            }else if (randStart % 2 == 0) {
+                if (randScreenPos % 2 == 1) {
+                    var y = Math.floor(Math.random() * SCREEN_HEIGHT);
+                    app.enemy3Array.push(new Enemy3("ball3", SCREEN_WIDTH + 100, y, 30));
+                }
+                else if (randScreenPos % 2 == 0) {
+                    var y = Math.floor(Math.random() * SCREEN_HEIGHT);
+                    app.enemy3Array.push(new Enemy3("ball3", -100, y, 30));
+                }
+            }
         }
     }
 }
