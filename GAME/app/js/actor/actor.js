@@ -183,19 +183,31 @@ function Player(nameString, x, y, width, height, r) {
         if(app.keyboard.w.isPressed)
         {
             app.playerChar.pos.y -= moveSpeed * dt;
+            if(app.playerChar.pos.y < 0) {
+                app.playerChar.pos.y = 0;
+            }
         }
         
         if(app.keyboard.s.isPressed)
         {
             app.playerChar.pos.y += moveSpeed * dt;
+            if(app.playerChar.pos.y > SCREEN_HEIGHT) {
+                app.playerChar.pos.y = SCREEN_HEIGHT;
+            }
         }
         
         if(app.keyboard.d.isPressed) {
             app.playerChar.pos.x += moveSpeed * dt;
+            if(app.playerChar.pos.x > SCREEN_WIDTH) {
+                app.playerChar.pos.x = SCREEN_WIDTH;
+            }
         }
         
         if(app.keyboard.a.isPressed) {
             app.playerChar.pos.x -= moveSpeed * dt;
+            if(app.playerChar.pos.x < 0) {
+                app.playerChar.pos.x = 0;
+            }
         }
 
         app.BossArray.forEach(function(entry){
