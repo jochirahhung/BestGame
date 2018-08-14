@@ -10,12 +10,19 @@ Screen.prototype.constructor = Screen;
 function LandingScreen(playButton, instructionsButton) {
     Screen.call(this, "landing_screen");
 
-    ui.makeTitleText(this, "CRYPTIDS DECLASSIFIED", "60px", SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2) - 50);
+    var screen = new createjs.Shape();
+    screen.graphics.beginFill('#fff').beginStroke('#000').drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    this.addChild(screen);
 
+    ui.makeTitleText(this, "CRYPTIDS DECLASSIFIED", "60px", SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2) - 150);
+
+    ui.makeStatButton(this, ((SCREEN_WIDTH / 2) + 40) - 150, SCREEN_HEIGHT / 2, "strength");
+    ui.makeStatButton(this, ((SCREEN_WIDTH / 2) + 40) - 50, SCREEN_HEIGHT / 2, "endurance");
+    ui.makeStatButton(this, ((SCREEN_WIDTH / 2) + 40) + 50, SCREEN_HEIGHT / 2, "perception");
+    ui.makeStatButton(this, ((SCREEN_WIDTH / 2) + 40) + 150, SCREEN_HEIGHT / 2, "agility");
     
-    
-    ui.makeBasicButton(this, "PLAY", 400, 400, playButton);
-    ui.makeBasicButton(this, "HOW TO PLAY", 400, 450, instructionsButton);
+    ui.makeBasicButton(this, "PLAY", SCREEN_WIDTH / 2, 450, playButton);
+    ui.makeBasicButton(this, "HOW TO PLAY", SCREEN_WIDTH / 2, 500, instructionsButton);
 }
 LandingScreen.prototype = Object.create(Screen.prototype);
 LandingScreen.prototype.constructor = LandingScreen;
@@ -43,6 +50,10 @@ GameplayScreen.prototype.constructor = GameplayScreen;
 //game over screen
 function GameOverScreen(playAgainButton, mainMenuButton) {
     Screen.call(this, "gameover_screen");
+
+    var background = new createjs.Shape();
+    background.graphics.beginFill('#fff').beginStroke('#000').drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    this.addChild(background);
     
     ui.makeBasicText(this, "GAME OVER", "60px", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
     ui.makeBasicText(this, "Guess you weren't up to the task...", "35px", SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2) + 35);

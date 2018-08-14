@@ -38,7 +38,8 @@ var app = {
             { src: "js/ui/ui.js" },
             { src: "js/ui/screen.js" },
             { src: "js/actor/playerSettings.js"},
-            { src: "js/settings.js" }
+            { src: "js/settings.js" },
+            { src: "js/stats.js" }
         ];
         this.assets = new createjs.LoadQueue(true);
 
@@ -180,6 +181,16 @@ var app = {
                 );
                 break;
             case STATES.GAME_OVER:
+                // this.enemy1Array.forEach(enemy => {
+                //     app.stage.removeChild(enemy);
+                // });
+                // this.enemy2Array.forEach(enemy => {
+                //     app.stage.removeChild(enemy);
+                // });
+                // this.enemy3Array.forEach(enemy => {
+                //     app.stage.removeChild(enemy);
+                // });
+                // app.stage.removeChild(this.playerChar);
                 this.screen = new GameOverScreen(
                     //play again button logic
                     function() {
