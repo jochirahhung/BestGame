@@ -169,8 +169,8 @@ var app = {
                 // this.stage.addChild(this.screen);
                 break;
             case STATES.GAMEPLAY:
-                this.screen = new GameplayScreen();
-                this.resetGame();
+            this.resetGame();
+            this.screen = new GameplayScreen();
                 break;
             case STATES.INSTRUCTIONS:
                 this.screen = new InstructionScreen(

@@ -1,4 +1,4 @@
-var STAT_MAX = 10;
+var STAT_MAX = 5;
 var STAT_MIN = 1;
 var stats = {
 

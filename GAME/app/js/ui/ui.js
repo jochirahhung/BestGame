@@ -126,5 +126,32 @@ var ui = {
         });
 
         return mainContainer;
+    },
+
+    makeHealthBar: function(parent, x, y, healthStat) {
+        var WIDTH = 200;
+        var HEIGHT = 35;
+
+        var fullHealth = healthStat;
+
+        var healthBar = new createjs.Container();
+        healthBar.x = x;
+        healthBar.y = y;
+        parent.addChild(healthBar);
+
+        var background = new createjs.Shape();
+        background.graphics.beginStroke("rgb(0, 0, 0)").drawRect(0, 0, WIDTH, HEIGHT);
+        healthBar.addChild(background);
+
+        var health = new createjs.Shape();
+        health.graphics.beginFill("rgb(255, 0, 0)").drawRect(0, 0, WIDTH, HEIGHT);
+        healthBar.addChild(health);
+
+        healthBar.update = function(currentHealth) {
+            health.scaleX = (currentHealth / fullHealth);
+        }
+
+        return healthBar;
+        
     }
 }

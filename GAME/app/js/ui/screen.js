@@ -43,6 +43,8 @@ InstructionScreen.prototype.constructor = InstructionScreen;
 //main game screen
 function GameplayScreen() {
     Screen.call(this, "gameplay_screen");
+
+    this.healthBar = ui.makeHealthBar(this, 20, 20, app.playerChar.stats.health);
 }
 GameplayScreen.prototype = Object.create(createjs.Container.prototype);
 GameplayScreen.prototype.constructor = GameplayScreen;

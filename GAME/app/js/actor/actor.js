@@ -240,6 +240,7 @@ function Player(nameString, x, y, width, height, r) {
 
     this.onCollect = function(entry) {
         this.stats.health -= entry.stats.dmg;
+        if (app.screen instanceof GameplayScreen) { app.screen.healthBar.update(this.stats.health) };
         if(this.stats.health < 1) {
             console.log("Im dead yo");
             app.setState(STATES.GAME_OVER);
