@@ -222,6 +222,14 @@ var app = {
     },
 
     resetGame: function() {
+        this.clearArrays();
+        this.stage.removeAllChildren();
+        this.stage.update();
+
+        var screen = new createjs.Shape();
+        screen.graphics.beginStroke('#000').drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        app.stage.addChild(screen);
+
         this.playerChar = new Player("player", SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 25, 25, 25);
 
         this.debugLine = new createjs.Shape();
@@ -229,7 +237,7 @@ var app = {
         this.stage.addChild(this.debugLine);
 
         this.stage.on("stagemousedown", function(event) {
-            console.log("jkjkjk");
+            //console.log("jkjkjk");
             if(app.fireRate <= 0) {
                 app.bullets.push(new Bullet("Bullet", app.playerChar.pos.x, app.playerChar.pos.y, 5));
                 app.fireRate = 1 - (thePlayer.specials.perception / 10);
@@ -305,5 +313,13 @@ var app = {
                 }
             }
         }
+    },
+
+    clearArrays: function() {
+        console.log("clear arrays called");
+        app.enemy1Array = [];
+        app.enemy2Array = [];
+        app.enemy3Array = [];
+        app.BossArray = [];
     }
 }
