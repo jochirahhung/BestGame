@@ -30,7 +30,7 @@ var ui = {
     },
 
     makeBasicButton: function(parent, text, x, y, callbackFunc) {
-        var BUTTON_WIDTH = 200;
+        var BUTTON_WIDTH = 100;
         var BUTTON_HEIGHT = 50;
 
         var buttonElement = new createjs.Container();
@@ -39,6 +39,7 @@ var ui = {
         parent.addChild(buttonElement);
 
         var shape = new createjs.Shape();
+        shape.graphics.beginStroke("rgb(0,0,0)").drawRect(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT);
         shape.graphics.beginFill("rgb(255,255,255)").drawRect(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT);
         buttonElement.addChild(shape);
 

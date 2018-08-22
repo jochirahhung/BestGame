@@ -12,16 +12,59 @@ Actor.prototype.update = function(dt)
 
 };
 
-function Enemy(nameString, x, y, r){
+function bitmapActor(nameString, x, y, r, imageID) {
     Actor.call(this, nameString, x, y, r);
+    this.image = new createjs.Bitmap(app.assets.getResult(imageID));
+    this.image.x = this.pos.x;
+    this.image.y = this.pos.y;
+
+    this.image.scale = 0.5;
+
+    this.image.regX = this.image.getBounds().width / 2;
+    this.image.regY = this.image.getBounds().height / 2;
+
+    app.stage.addChild(this.image);
+}
+bitmapActor.prototype = Object.create(Actor.prototype);
+bitmapActor.prototype.constructor = bitmapActor;
+bitmapActor.prototype.update = function(dt) {
+    this.image.x= this.pos.x;
+    this.image.y= this.pos.y;
+
+    Actor.prototype.update.call(this, dt);
+}
+
+function spriteActor(nameString, x, y, r, imageID) {
+    Actor.call(this, nameString, x, y, r);
+    this.image = new createjs.Sprite(app.assets.getResult(imageID));
+    this.image.x = this.pos.x;
+    this.image.y = this.pos.y;
+    this.image.scale = 3;
+    //console.log(app.assets.getResult(imageID));
+
+    app.stage.addChild(this.image);
+}
+spriteActor.prototype = Object.create(Actor.prototype);
+spriteActor.prototype.constructor = spriteActor;
+spriteActor.prototype.update = function(dt) {
+    this.image.x= this.pos.x;
+    this.image.y= this.pos.y;
+
+    Actor.prototype.update.call(this, dt);
+}
+
+function Enemy(nameString, x, y, r){
+    spriteActor.call(this, nameString, x, y, r, "ghost");
     this.stats = { health: 3, dmg: 2};
+    this.image.gotoAndPlay("walk");
+    //this.image.scale = 3;
 
     var ball = new createjs.Shape();
-    ball.graphics.beginStroke("#000").drawCircle(0, 0, r);
-    ball.x = x;
-    ball.y = y;
+    // ball.graphics.beginStroke("#000").drawCircle(0, 0, r);
+    // ball.x = x;
+    // ball.y = y;
 
-    app.stage.addChild(ball);
+    // app.stage.addChild(ball);
 
     this.update = function(dt){
         var angleRad = Math.atan2(app.playerChar.pos.y - this.pos.y, app.playerChar.pos.x - this.pos.x);
@@ -29,33 +72,37 @@ function Enemy(nameString, x, y, r){
         this.rotation = angleDeg;
         this.pos.x += Math.cos(angleRad) * 40 * dt;
         this.pos.y += Math.sin(angleRad) * 40 * dt;
-        ball.x = this.pos.x;
-        ball.y = this.pos.y;
+
+        spriteActor.prototype.update.call(this, dt);
+        // ball.x = this.pos.x;
+        // ball.y = this.pos.y;
     }
 
     this.onCollect = function(entry) {
         this.stats.health -= entry.stats.dmg;
         if(this.stats.health < 1) {
-            app.stage.removeChild(ball);
+            app.stage.removeChild(this.image);
             app.enemy1Array.splice(app.enemy1Array.indexOf(this), 1);
             var x = Math.floor(Math.random() * SCREEN_WIDTH);
-            app.enemy1Array.push(new Enemy("ball", x, 750, 40));
+            app.enemy1Array.push(new Enemy("ghost", x, 750, 40));
         }
     }
 }
-Enemy.prototype = Object.create(Actor.prototype);
+Enemy.prototype = Object.create(spriteActor.prototype);
 Enemy.prototype.constructor = Enemy;
 
 function Enemy2(nameString, x, y, r){
-    Actor.call(this, nameString, x, y, r);
+    spriteActor.call(this, nameString, x, y, r, "skeleton");
     this.stats = { health: 1, dmg: 1 };
+    this.image.gotoAndPlay("walk");
+    //this.image.scale = 1.5;
 
-    var ball2 = new createjs.Shape();
-    ball2.graphics.beginStroke("#000").drawCircle(0, 0, r);
-    ball2.x = x;
-    ball2.y = y;
+    // var ball2 = new createjs.Shape();
+    // ball2.graphics.beginStroke("#000").drawCircle(0, 0, r);
+    // ball2.x = x;
+    // ball2.y = y;
 
-    app.stage.addChild(ball2);
+    // app.stage.addChild(ball2);
 
     this.update = function(dt){
         var angleRad = Math.atan2(app.playerChar.pos.y - this.pos.y, app.playerChar.pos.x - this.pos.x);
@@ -63,33 +110,36 @@ function Enemy2(nameString, x, y, r){
         this.rotation = angleDeg;
         this.pos.x += Math.cos(angleRad) * 100 * dt;
         this.pos.y += Math.sin(angleRad) * 100 * dt;
-        ball2.x = this.pos.x;
-        ball2.y = this.pos.y;
+
+        spriteActor.prototype.update.call(this, dt);
+        // ball2.x = this.pos.x;
+        // ball2.y = this.pos.y;
     }
 
     this.onCollect = function(entry) {
         this.stats.health -= entry.stats.dmg;
         if(this.stats.health < 1) {
-            app.stage.removeChild(ball2);
+            app.stage.removeChild(this.image);
             app.enemy2Array.splice(app.enemy2Array.indexOf(this), 1);
             var x = Math.floor(Math.random() * SCREEN_WIDTH);
-            app.enemy2Array.push(new Enemy2("ball2", x, 850, 10));
+            app.enemy2Array.push(new Enemy2("skeleton", x, 850, 10));
         }
     }
 }
-Enemy2.prototype = Object.create(Actor.prototype);
+Enemy2.prototype = Object.create(spriteActor.prototype);
 Enemy2.prototype.constructor = Enemy2;
 
 function Enemy3(nameString, x, y, r){
-    Actor.call(this, nameString, x, y, r);
+    spriteActor.call(this, nameString, x, y, r, "bat");
     this.stats = { health: 3, dmg: 3 };
+    this.image.gotoAndPlay("walk");
 
-    var ball3 = new createjs.Shape();
-    ball3.graphics.beginStroke("#000").drawCircle(0, 0, r);
-    ball3.x = x;
-    ball3.y = y;
+    // var ball3 = new createjs.Shape();
+    // ball3.graphics.beginStroke("#000").drawCircle(0, 0, r);
+    // ball3.x = x;
+    // ball3.y = y;
 
-    app.stage.addChild(ball3);
+    // app.stage.addChild(ball3);
 
     this.update = function(dt){
         var angleRad = Math.atan2(app.playerChar.pos.y - this.pos.y, app.playerChar.pos.x - this.pos.x);
@@ -97,36 +147,40 @@ function Enemy3(nameString, x, y, r){
         this.rotation = angleDeg;
         this.pos.x += Math.cos(angleRad) * 60 * dt;
         this.pos.y += Math.sin(angleRad) * 60 * dt;
-        ball3.x = this.pos.x;
-        ball3.y = this.pos.y;
+
+        spriteActor.prototype.update.call(this, dt);
+        // ball3.x = this.pos.x;
+        // ball3.y = this.pos.y;
     }
 
     this.onCollect = function(entry) {
         this.stats.health -= entry.stats.dmg;
         if(this.stats.health < 1) {
-            app.stage.removeChild(ball3);
+            app.stage.removeChild(this.image);
             app.enemy3Array.splice(app.enemy3Array.indexOf(this), 1);
             var x = Math.floor(Math.random() * SCREEN_WIDTH);
-            app.enemy3Array.push(new Enemy3("ball3", x, -200, 30));
+            app.enemy3Array.push(new Enemy3("bat", x, -200, 30));
         }
     }
 }
-Enemy3.prototype = Object.create(Actor.prototype);
+Enemy3.prototype = Object.create(spriteActor.prototype);
 Enemy3.prototype.constructor = Enemy3;
 
 function Boss(nameString, x, y, width, height, r){
-    Actor.call(this, nameString, x, y, r);
+    spriteActor.call(this, nameString, x, y, r, "frog");
     this.stats = { health: 5, dmg: 5 };
+    this.image.gotoAndPlay("walk");
+    this.image.scale = 2.5;
 
-    var bossCircle = new createjs.Shape();
-    bossCircle.graphics.beginFill("#F00").drawRect(0, 0, width, height);
-    bossCircle.x = x;
-    bossCircle.y = y;
-    bossCircle.setBounds(0, 0, width, height);
-    bossCircle.regX = width/2;
-    bossCircle.regY = height/2;
+    // var bossCircle = new createjs.Shape();
+    // bossCircle.graphics.beginStroke("#F00").drawRect(0, 0, width, height);
+    // bossCircle.x = x;
+    // bossCircle.y = y;
+    // bossCircle.setBounds(0, 0, width, height);
+    // bossCircle.regX = width/2;
+    // bossCircle.regY = height/2;
 
-    app.stage.addChild(bossCircle);
+    // app.stage.addChild(bossCircle);
 
     this.update = function(dt){
         var angleRad = Math.atan2(app.playerChar.pos.y - this.pos.y, app.playerChar.pos.x - this.pos.x);
@@ -134,8 +188,10 @@ function Boss(nameString, x, y, width, height, r){
         this.rotation = angleDeg;
         this.pos.x += Math.cos(angleRad) * 25 * dt;
         this.pos.y += Math.sin(angleRad) * 25 * dt;
-        bossCircle.x = this.pos.x;
-        bossCircle.y = this.pos.y;
+
+        spriteActor.prototype.update.call(this, dt);
+        // bossCircle.x = this.pos.x;
+        // bossCircle.y = this.pos.y;
     }
 
     this.onCollect = function(entry) {
@@ -154,25 +210,25 @@ function Boss(nameString, x, y, width, height, r){
     }
 
     this.resetBoss = function() {
-        app.stage.removeChild(bossCircle);
+        app.stage.removeChild(this.image);
         app.BossArray.splice(app.BossArray.indexOf(this), 1);
     }
 }
-Boss.prototype = Object.create(Actor.prototype);
+Boss.prototype = Object.create(spriteActor.prototype);
 Boss.prototype.constructor = Boss;
 
 function Player(nameString, x, y, width, height, r) {
-    Actor.call(this, nameString, x, y, r);
+    bitmapActor.call(this, nameString, x, y, r, "player");
     this.stats = { health: thePlayer.baseHealth + thePlayer.specials.endurance, dmg: thePlayer.baseDmg }
 
-    var player = new createjs.Shape();
-    player.graphics.beginFill('#fffff').drawRect(0, 0, width, height);
-    player.x = x;
-    player.y = y;
-    player.setBounds(0, 0, width, height);
-    player.regX = width/2;
-    player.regY = height/2;
-    app.stage.addChild(player);
+    // var player = new createjs.Shape();
+    // player.graphics.beginFill('#fffff').drawRect(0, 0, width, height);
+    // player.x = x;
+    // player.y = y;
+    // player.setBounds(0, 0, width, height);
+    // player.regX = width/2;
+    // player.regY = height/2;
+    // app.stage.addChild(player);
 
     var moveSpeed = 150 + (thePlayer.specials.agility * 10);
 
@@ -234,12 +290,14 @@ function Player(nameString, x, y, width, height, r) {
             }
         }, this);
 
-        player.x = app.playerChar.pos.x;
-        player.y = app.playerChar.pos.y;
+        // player.x = app.playerChar.pos.x;
+        // player.y = app.playerChar.pos.y;
+        bitmapActor.prototype.update.call(this, dt);
     }
 
     this.onCollect = function(entry) {
         this.stats.health -= entry.stats.dmg;
+        createjs.Sound.play("hurt");
         if (app.screen instanceof GameplayScreen) { app.screen.healthBar.update(this.stats.health) };
         if(this.stats.health < 1) {
             console.log("Im dead yo");
@@ -252,7 +310,7 @@ function Player(nameString, x, y, width, height, r) {
         entry.onCollect(this);
     }
 }
-Player.prototype = Object.create(Actor.prototype);
+Player.prototype = Object.create(spriteActor.prototype);
 Player.prototype.constructor = Player;
 
 function Bullet(nameString, x, y, r) {

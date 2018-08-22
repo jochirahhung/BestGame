@@ -23,6 +23,14 @@ function LandingScreen(playButton, instructionsButton) {
     
     ui.makeBasicButton(this, "PLAY", SCREEN_WIDTH / 2, 450, playButton);
     ui.makeBasicButton(this, "HOW TO PLAY", SCREEN_WIDTH / 2, 500, instructionsButton);
+
+    ui.makeBasicButton(this, "MUTE", SCREEN_WIDTH - 100, 50, function() {
+        if (app.music.muted) {
+            app.music.muted = false;
+        } else {
+            app.music.muted = true;
+        }
+    });
 }
 LandingScreen.prototype = Object.create(Screen.prototype);
 LandingScreen.prototype.constructor = LandingScreen;
@@ -60,8 +68,9 @@ function GameOverScreen(playAgainButton, mainMenuButton) {
     ui.makeBasicText(this, "GAME OVER", "60px", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
     ui.makeBasicText(this, "Guess you weren't up to the task...", "35px", SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2) + 35);
 
-    ui.makeBasicButton(this, "TRY AGAIN?", (SCREEN_WIDTH / 2) - 20, (SCREEN_HEIGHT / 2) + 50, playAgainButton);
-    ui.makeBasicButton(this, "MAIN MENU", (SCREEN_WIDTH / 2) + 20, (SCREEN_HEIGHT / 2) + 50, mainMenuButton);
+    ui.makeBasicButton(this, "TRY AGAIN?", (SCREEN_WIDTH / 2) - 50, (SCREEN_HEIGHT / 2) + 50, playAgainButton);
+    ui.makeBasicButton(this, "MAIN MENU", (SCREEN_WIDTH / 2) + 50, (SCREEN_HEIGHT / 2) + 50, mainMenuButton);
+    
 }
 GameOverScreen.prototype = Object.create(createjs.Container.prototype);
 GameOverScreen.prototype.constructor = GameOverScreen;

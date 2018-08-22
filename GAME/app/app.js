@@ -24,6 +24,7 @@ var app = {
     debugLine: null,
     screen: null,
     gameState: 0,
+    music: null,
 
     setupCanvas: function() {
         var canvas = document.getElementById("game");
@@ -39,12 +40,42 @@ var app = {
             { src: "js/ui/screen.js" },
             { src: "js/actor/playerSettings.js"},
             { src: "js/settings.js" },
-            { src: "js/stats.js" }
+            { src: "js/stats.js" },
+            { src: "assets/hurt.wav", id: "hurt" },
+            { src: "assets/shoot.wav", id: "shoot" },
+            { src: "assets/bg_music.wav", id: "bg_music" },
+            { src: "assets/player.png", id: "player" },
+            {
+                src: "assets/bat.json",
+                id: "bat",
+                type: "spritesheet",
+                crossOrigin: true
+            },
+            {
+                src: "assets/frog.json",
+                id: "frog",
+                type: "spritesheet",
+                crossOrigin: true
+            },
+            {
+                src: "assets/ghost.json",
+                id: "ghost",
+                type: "spritesheet",
+                crossOrigin: true
+            },
+            {
+                src: "assets/skeleton.json",
+                id: "skeleton",
+                type: "spritesheet",
+                crossOrigin: true
+            }
         ];
         this.assets = new createjs.LoadQueue(true);
+        createjs.Sound.alternateExtensions = ["wav"];
+        this.assets.installPlugin(createjs.Sound);
 
         this.assets.on("progress", function (event) { 
-            // console.log(((event.loaded / event.total) * 100) + "%"); 
+            console.log(((event.loaded / event.total) * 100) + "%"); 
         });
 
         this.assets.on("complete", function (event) {
@@ -57,6 +88,8 @@ var app = {
         this.setupCanvas();
 
         this.stage.enableMouseOver();
+        //this.stage.snapToPixelEnabled = true;
+        this.music = createjs.Sound.play("bg_music");
 
         var screen = new createjs.Shape();
         screen.graphics.beginStroke('#000').drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -230,6 +263,14 @@ var app = {
         screen.graphics.beginStroke('#000').drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         app.stage.addChild(screen);
 
+        ui.makeBasicButton(this.stage, "MUTE", SCREEN_WIDTH - 100, 50, function() {
+            if (app.music.muted) {
+                app.music.muted = false;
+            } else {
+                app.music.muted = true;
+            }
+        });
+
         this.playerChar = new Player("player", SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 25, 25, 25);
 
         this.debugLine = new createjs.Shape();
@@ -239,6 +280,7 @@ var app = {
         this.stage.on("stagemousedown", function(event) {
             //console.log("jkjkjk");
             if(app.fireRate <= 0) {
+                createjs.Sound.play("shoot");
                 app.bullets.push(new Bullet("Bullet", app.playerChar.pos.x, app.playerChar.pos.y, 5));
                 app.fireRate = 1 - (thePlayer.specials.perception / 10);
             }
@@ -250,20 +292,20 @@ var app = {
             if(randStart % 2 == 1) {
                 if (randScreenPos % 2 == 1) {
                     var x = Math.floor(Math.random() * SCREEN_WIDTH);
-                    app.enemy1Array.push(new Enemy("ball", x, SCREEN_HEIGHT + 100, 40));
+                    app.enemy1Array.push(new Enemy("ghost", x, SCREEN_HEIGHT + 100, 40));
                 }
                 else if (randScreenPos % 2 == 0) {
                     var x = Math.floor(Math.random() * SCREEN_WIDTH);
-                    app.enemy1Array.push(new Enemy("ball", x, -100, 40));
+                    app.enemy1Array.push(new Enemy("ghost", x, -100, 40));
                 }
             }else if (randStart % 2 == 0) {
                 if (randScreenPos % 2 == 1) {
                     var y = Math.floor(Math.random() * SCREEN_HEIGHT);
-                    app.enemy1Array.push(new Enemy("ball", SCREEN_WIDTH + 100, y, 40));
+                    app.enemy1Array.push(new Enemy("ghost", SCREEN_WIDTH + 100, y, 40));
                 }
                 else if (randScreenPos % 2 == 0) {
                     var y = Math.floor(Math.random() * SCREEN_HEIGHT);
-                    app.enemy1Array.push(new Enemy("ball", -100, y, 40));
+                    app.enemy1Array.push(new Enemy("ghost", -100, y, 40));
                 }
             }
         }
@@ -273,20 +315,20 @@ var app = {
             if(randStart % 2 == 1) {
                 if (randScreenPos % 2 == 1) {
                     var x = Math.floor(Math.random() * SCREEN_WIDTH);
-                    app.enemy2Array.push(new Enemy2("ball2", x, SCREEN_HEIGHT + 100, 10));
+                    app.enemy2Array.push(new Enemy2("skeleton", x, SCREEN_HEIGHT + 100, 10));
                 }
                 else if (randScreenPos % 2 == 0) {
                     var x = Math.floor(Math.random() * SCREEN_WIDTH);
-                    app.enemy2Array.push(new Enemy2("ball2", x, -100, 10));
+                    app.enemy2Array.push(new Enemy2("skeleton", x, -100, 10));
                 }
             }else if (randStart % 2 == 0) {
                 if (randScreenPos % 2 == 1) {
                     var y = Math.floor(Math.random() * SCREEN_HEIGHT);
-                    app.enemy2Array.push(new Enemy2("ball2", SCREEN_WIDTH + 100, y, 10));
+                    app.enemy2Array.push(new Enemy2("skeleton", SCREEN_WIDTH + 100, y, 10));
                 }
                 else if (randScreenPos % 2 == 0) {
                     var y = Math.floor(Math.random() * SCREEN_HEIGHT);
-                    app.enemy2Array.push(new Enemy2("ball2", -100, y, 10));
+                    app.enemy2Array.push(new Enemy2("skeleton", -100, y, 10));
                 }
             }
         }
@@ -296,20 +338,20 @@ var app = {
             if(randStart % 2 == 1) {
                 if (randScreenPos % 2 == 1) {
                     var x = Math.floor(Math.random() * SCREEN_WIDTH);
-                    app.enemy3Array.push(new Enemy3("ball3", x, SCREEN_HEIGHT + 100, 30));
+                    app.enemy3Array.push(new Enemy3("bat", x, SCREEN_HEIGHT + 100, 30));
                 }
                 else if (randScreenPos % 2 == 0) {
                     var x = Math.floor(Math.random() * SCREEN_WIDTH);
-                    app.enemy3Array.push(new Enemy3("ball3", x, -100, 30));
+                    app.enemy3Array.push(new Enemy3("bat", x, -100, 30));
                 }
             }else if (randStart % 2 == 0) {
                 if (randScreenPos % 2 == 1) {
                     var y = Math.floor(Math.random() * SCREEN_HEIGHT);
-                    app.enemy3Array.push(new Enemy3("ball3", SCREEN_WIDTH + 100, y, 30));
+                    app.enemy3Array.push(new Enemy3("bat", SCREEN_WIDTH + 100, y, 30));
                 }
                 else if (randScreenPos % 2 == 0) {
                     var y = Math.floor(Math.random() * SCREEN_HEIGHT);
-                    app.enemy3Array.push(new Enemy3("ball3", -100, y, 30));
+                    app.enemy3Array.push(new Enemy3("bat", -100, y, 30));
                 }
             }
         }
