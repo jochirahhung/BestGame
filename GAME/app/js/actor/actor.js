@@ -236,6 +236,7 @@ function Player(nameString, x, y, width, height, r) {
         var angleRad = Math.atan2(app.mousePos.y - app.playerChar.pos.y, app.mousePos.x - app.playerChar.pos.x);
         var angleDeg = angleRad * 180 / Math.PI;
         app.playerChar.rotation = angleDeg;
+        this.image.rotation = app.playerChar.rotation;
         if(app.keyboard.w.isPressed)
         {
             app.playerChar.pos.y -= moveSpeed * dt;
@@ -316,7 +317,14 @@ Player.prototype.constructor = Player;
 function Bullet(nameString, x, y, r) {
     Actor.call(this, nameString, x, y, r);
 
-    this.stats = {dmg: 1 + (thePlayer.specials.strength / 2)};
+    var damage;
+    if (EASY_MODE) {
+        damage = 1000;
+    } else {
+        damage = 1 + (thePlayer.specials.strength / 2);
+    }
+
+    this.stats = {dmg: damage};
 
     var bullet = new createjs.Shape();
     bullet.graphics.beginFill('#00ff00').drawCircle(0, 0, r);
@@ -330,6 +338,11 @@ function Bullet(nameString, x, y, r) {
         this.pos.y += Math.sin(angleRad) * 150 * dt;
         bullet.x = this.pos.x;
         bullet.y = this.pos.y;
+
+        // if(app.keyboard.j.isPressed) {
+        //     if(EASY_MODE) {this.stats.dmg = 1000;}
+        //     else {this.stats.dmg = 1 + (thePlayer.specials.strength / 2);}
+        // }
 
         app.BossArray.forEach(function(entry){
             if(areActorsColliding(this, entry)) {

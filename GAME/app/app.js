@@ -5,6 +5,7 @@ var app = {
         w : { keycode: 87, isPressed: false },
         d : { keycode: 68, isPressed: false },
         s : { keycode: 83, isPressed: false },
+        j:  { keycode: 74, isPressed: false },
         spacebar : { keycode: 32, isPressed: false }
     },
     mousePos: {
@@ -89,7 +90,7 @@ var app = {
 
         this.stage.enableMouseOver();
         //this.stage.snapToPixelEnabled = true;
-        this.music = createjs.Sound.play("bg_music");
+        this.music = createjs.Sound.play("bg_music", {loop: -1});
 
         var screen = new createjs.Shape();
         screen.graphics.beginStroke('#000').drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -114,6 +115,16 @@ var app = {
         app.elapsedTime += dt;
         //state machine update (update as necessary)
         if (app.gameState === STATES.GAMEPLAY) {
+            if (app.keyboard.j.isPressed) {
+                if (app.screen instanceof GameplayScreen) {
+                    if (EASY_MODE) {
+                        app.screen.easyMode.visible = true;
+                    }
+                    else {
+                        app.screen.easyMode.visible = false;
+                    }
+                }
+            }
             app.debugLine.graphics.clear();
             app.debugLine.graphics.beginStroke('00f').moveTo(app.playerChar.pos.x, app.playerChar.pos.y).lineTo(app.mousePos.x, app.mousePos.y);
             var ROT_SPEED = 100;
@@ -160,7 +171,16 @@ var app = {
             case app.keyboard.w.keycode:        app.keyboard.w.isPressed = true; return false;
             case app.keyboard.d.keycode:        app.keyboard.d.isPressed = true; return false;
             case app.keyboard.s.keycode:        app.keyboard.s.isPressed = true; return false;
-            case app.keyboard.j.keycode:        app.keyboard.j.isPressed = true; return false;
+            case app.keyboard.j.keycode: 
+                app.keyboard.j.isPressed = true;
+                if (EASY_MODE) {
+                    EASY_MODE = false;
+                    console.log("Easy mode deactivated. Real big boy hours.");
+                } else if (EASY_MODE === false) {
+                    EASY_MODE = true;
+                    console.log("*d.va voice* Is this easy mode?");
+                }
+                return false;
             case app.keyboard.k.keyCode:        app.keyboard.k.isPressed = true; return false;
             case app.keyboard.spacebar.keyCode:        app.keyboard.spacebar.isPressed = true; return false;
         }
@@ -204,6 +224,11 @@ var app = {
             case STATES.GAMEPLAY:
             this.resetGame();
             this.screen = new GameplayScreen();
+            if (EASY_MODE) {
+                app.screen.easyMode.visible = true;
+            } else {
+                app.screen.easyMode.visible = false;
+            }
                 break;
             case STATES.INSTRUCTIONS:
                 this.screen = new InstructionScreen(
@@ -247,6 +272,12 @@ var app = {
                     }
                 );
                 break;
+            case STATES.CREDITS:
+                this.screen = new CreditsScreen(
+                    function() {
+                        app.setState(STATES.MAIN_MENU);
+                    }
+                );
             default:
                 console.log("ERROR: GAMESTATE DEFAULT CASE");
                 break;
